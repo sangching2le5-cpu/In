@@ -1,0 +1,2626 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Unit 12 – Everyday minor problems | Digital Lesson</title>
+<style>
+:root{
+  --navy:#16324f;
+  --navy-2:#1f4e79;
+  --blue:#3b7dd8;
+  --blue-soft:#7fb0e8;
+  --pastel:#e8f1fb;
+  --pastel-2:#f6fafe;
+  --border:#d3e2f3;
+  --text:#1b2a3a;
+  --muted:#5c7791;
+  --green:#1f8a5b;
+  --green-bg:#e6f7ef;
+  --red:#c0392b;
+  --red-bg:#fdecea;
+  --amber:#b7791f;
+  --amber-bg:#fdf6e3;
+  --shadow:0 2px 10px rgba(22,50,79,.08);
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  font-family:"Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+  background:var(--pastel-2);
+  color:var(--text);
+  line-height:1.6;
+  -webkit-text-size-adjust:100%;
+  font-size:16px;
+}
+button{font-family:inherit;}
+/* ---------- TOP BAR ---------- */
+.topbar{
+  position:fixed;top:0;left:0;right:0;height:58px;
+  background:linear-gradient(90deg,var(--navy) 0%,var(--navy-2) 100%);
+  color:#fff;display:flex;align-items:center;gap:14px;padding:0 16px;
+  z-index:60;box-shadow:0 2px 8px rgba(0,0,0,.12);
+}
+.menu-btn{
+  display:none;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);
+  color:#fff;font-size:18px;border-radius:8px;width:40px;height:38px;cursor:pointer;
+}
+.menu-btn:hover{background:rgba(255,255,255,.22);}
+.topbar-title{display:flex;flex-direction:column;line-height:1.15;min-width:0;}
+.tb-unit{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#a9c9ec;}
+.tb-name{font-size:15px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.topbar-progress{margin-left:auto;display:flex;align-items:center;gap:10px;min-width:150px;}
+.progress-track{width:130px;height:8px;border-radius:99px;background:rgba(255,255,255,.22);overflow:hidden;}
+.progress-fill{height:100%;width:0%;background:linear-gradient(90deg,#8fd0ff,#ffffff);border-radius:99px;transition:width .35s ease;}
+.progress-text{font-size:12px;font-weight:600;color:#dceaf8;min-width:36px;text-align:right;}
+/* ---------- LAYOUT ---------- */
+.layout{display:flex;padding-top:58px;min-height:100vh;}
+.sidebar{
+  width:290px;flex:0 0 290px;background:#fff;border-right:1px solid var(--border);
+  height:calc(100vh - 58px);overflow-y:auto;position:sticky;top:58px;
+}
+.side-inner{padding:16px 14px 40px;}
+.side-h{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700;margin:16px 8px 8px;}
+.side-h:first-child{margin-top:4px;}
+.nav-link{
+  display:flex;align-items:center;gap:10px;width:100%;text-align:left;
+  background:transparent;border:none;border-radius:10px;padding:9px 10px;
+  font-size:14px;color:var(--navy);cursor:pointer;margin-bottom:3px;transition:.15s;
+}
+.nav-link:hover{background:var(--pastel);}
+.nav-link.active{background:var(--blue);color:#fff;font-weight:600;box-shadow:0 2px 8px rgba(59,125,216,.3);}
+.nav-link .ico{
+  flex:0 0 24px;height:24px;border-radius:7px;background:var(--pastel);color:var(--navy-2);
+  display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;
+}
+.nav-link.active .ico{background:rgba(255,255,255,.25);color:#fff;}
+.side-progress{margin:20px 8px 0;padding:12px;background:var(--pastel);border-radius:12px;}
+.side-progress h4{margin:0 0 8px;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--navy-2);}
+.sp-item{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--navy);padding:3px 0;}
+.sp-dot{
+  width:18px;height:18px;flex:0 0 18px;border-radius:50%;border:1.5px solid var(--blue-soft);
+  display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff;background:#fff;
+}
+.sp-item.done .sp-dot{background:var(--green);border-color:var(--green);}
+.sp-item.done{color:var(--muted);text-decoration:line-through;}
+.main{flex:1;min-width:0;padding:24px 28px 80px;max-width:1080px;margin:0 auto;width:100%;}
+.backdrop{display:none;}
+/* ---------- PAGES ---------- */
+.page{display:none;animation:fade .25s ease;}
+.page.active{display:block;}
+@keyframes fade{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
+.breadcrumbs{font-size:12.5px;color:var(--muted);margin-bottom:10px;}
+.breadcrumbs span{color:var(--navy-2);font-weight:600;}
+h1{font-size:26px;color:var(--navy);margin:0 0 6px;line-height:1.25;}
+h2{font-size:21px;color:var(--navy);margin:0 0 12px;}
+h3{font-size:17px;color:var(--navy-2);margin:0 0 10px;}
+h4{font-size:15px;color:var(--navy-2);margin:14px 0 8px;}
+p{margin:0 0 12px;}
+.subtitle{color:var(--muted);font-size:14.5px;margin-bottom:20px;}
+.card{
+  background:#fff;border:1px solid var(--border);border-radius:14px;
+  padding:18px 20px;margin-bottom:18px;box-shadow:var(--shadow);
+}
+.card.tint{background:var(--pastel-2);}
+.tag{
+  display:inline-block;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;
+  font-weight:700;padding:3px 9px;border-radius:99px;margin-bottom:10px;
+}
+.tag-orig{background:#e3edf9;color:var(--navy-2);}
+.tag-vi{background:var(--green-bg);color:var(--green);}
+.tag-ans{background:var(--amber-bg);color:var(--amber);}
+.tag-add{background:#efe7fb;color:#6b3fa0;}
+.tag-gram{background:#e6f0fb;color:var(--blue);}
+.orig-list{margin:0;padding-left:22px;}
+.orig-list li{margin-bottom:7px;color:var(--navy);}
+.orig-en{font-size:15.5px;color:var(--navy);}
+.item{
+  border-left:3px solid var(--blue-soft);padding:10px 0 10px 14px;margin-bottom:14px;
+  background:linear-gradient(90deg,rgba(232,241,251,.5),transparent 70%);
+  border-radius:0 10px 10px 0;
+}
+.item:last-child{margin-bottom:0;}
+.item-en{font-weight:600;color:var(--navy);font-size:15.5px;}
+.item-vi{color:var(--green);font-size:14.5px;margin:2px 0 6px;}
+.meta{font-size:13px;color:var(--navy-2);margin-bottom:4px;}
+.meta b{color:var(--blue);}
+.ipa{font-family:"Segoe UI",Arial,sans-serif;color:var(--muted);}
+.add-ex,.confuse{font-size:13.5px;padding:7px 10px;border-radius:8px;margin-top:6px;}
+.add-ex{background:#f3f0fc;border-left:3px solid #9b7fd4;}
+.confuse{background:var(--amber-bg);border-left:3px solid #e0b352;}
+.add-ex b,.confuse b{color:var(--navy-2);}
+table.data{width:100%;border-collapse:collapse;font-size:13.5px;margin:10px 0;}
+table.data th,table.data td{border:1px solid var(--border);padding:8px 10px;text-align:left;vertical-align:top;}
+table.data th{background:var(--pastel);color:var(--navy-2);font-weight:700;font-size:13px;}
+table.data tr:nth-child(even) td{background:#fbfdff;}
+.scroll-x{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+details.acc{
+  border:1px solid var(--border);border-radius:12px;background:#fff;margin-bottom:12px;overflow:hidden;
+}
+details.acc>summary{
+  cursor:pointer;list-style:none;padding:13px 16px;font-weight:600;color:var(--navy);
+  background:var(--pastel);display:flex;align-items:center;gap:10px;font-size:15px;
+}
+details.acc>summary::-webkit-details-marker{display:none;}
+details.acc>summary::before{content:"▸";color:var(--blue);font-size:14px;transition:.2s;}
+details.acc[open]>summary::before{transform:rotate(90deg);}
+details.acc .acc-body{padding:16px;}
+/* ---------- BUTTONS ---------- */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:6px;
+  background:var(--blue);color:#fff;border:none;border-radius:10px;
+  padding:9px 16px;font-size:14px;font-weight:600;cursor:pointer;transition:.15s;
+}
+.btn:hover{background:var(--navy-2);}
+.btn:active{transform:scale(.98);}
+.btn.ghost{background:#fff;color:var(--navy-2);border:1.5px solid var(--border);}
+.btn.ghost:hover{background:var(--pastel);border-color:var(--blue-soft);}
+.btn.green{background:var(--green);}
+.btn.green:hover{background:#176c47;}
+.btn.amber{background:var(--amber);}
+.btn.amber:hover{background:#96631a;}
+.btn.danger{background:var(--red);}
+.btn.danger:hover{background:#96291d;}
+.btn.small{padding:6px 11px;font-size:12.5px;border-radius:8px;}
+.btn-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;}
+/* ---------- FORM ---------- */
+textarea,input[type=text]{
+  width:100%;font-family:inherit;font-size:14.5px;color:var(--text);
+  border:1.5px solid var(--border);border-radius:10px;padding:10px 12px;background:#fff;
+  transition:.15s;resize:vertical;
+}
+textarea:focus,input[type=text]:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(59,125,216,.14);}
+textarea{min-height:64px;}
+input.correct,textarea.correct{border-color:var(--green);background:var(--green-bg);}
+input.wrong,textarea.wrong{border-color:var(--red);background:var(--red-bg);}
+input:disabled{background:#f1f5f9;color:var(--muted);}
+/* ---------- FEEDBACK ---------- */
+.fb{border-radius:10px;padding:10px 13px;font-size:13.8px;margin-top:10px;display:none;}
+.fb.show{display:block;}
+.fb.ok{background:var(--green-bg);border-left:4px solid var(--green);color:#14603f;}
+.fb.no{background:var(--red-bg);border-left:4px solid var(--red);color:#8e2519;}
+.fb.info{background:var(--pastel);border-left:4px solid var(--blue);color:var(--navy-2);}
+.fb.hint{background:var(--amber-bg);border-left:4px solid var(--amber);color:#7a5210;}
+.fb.model{background:#f3f0fc;border-left:4px solid #9b7fd4;color:#4a2d7a;}
+.fb b{font-weight:700;}
+/* ---------- OVERVIEW ---------- */
+.hero{
+  background:linear-gradient(135deg,var(--navy) 0%,var(--navy-2) 55%,var(--blue) 100%);
+  color:#fff;border-radius:18px;padding:28px 26px;margin-bottom:22px;box-shadow:0 6px 22px rgba(22,50,79,.22);
+}
+.hero h1{color:#fff;font-size:28px;margin-bottom:8px;}
+.hero p{color:#d6e6f7;margin-bottom:16px;font-size:15px;max-width:720px;}
+.hero .btn{background:#fff;color:var(--navy);}
+.hero .btn:hover{background:var(--pastel);}
+.hero .btn.ghost{background:transparent;color:#fff;border-color:rgba(255,255,255,.5);}
+.hero .btn.ghost:hover{background:rgba(255,255,255,.14);}
+.hero-progress{margin:18px 0 20px;max-width:460px;}
+.hero-progress .progress-track{width:100%;height:10px;background:rgba(255,255,255,.25);}
+.hero-progress .progress-fill{background:linear-gradient(90deg,#7fe0b0,#ffffff);}
+.hero-progress .lbl{font-size:12.5px;color:#cfe2f5;margin-top:6px;}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px;}
+.sec-card{
+  background:#fff;border:1px solid var(--border);border-radius:14px;padding:14px 16px;
+  cursor:pointer;transition:.18s;box-shadow:var(--shadow);position:relative;
+}
+.sec-card:hover{transform:translateY(-2px);border-color:var(--blue-soft);box-shadow:0 6px 18px rgba(22,50,79,.13);}
+.sec-card .sc-title{font-weight:600;color:var(--navy);font-size:14.5px;margin-bottom:4px;padding-right:26px;}
+.sec-card .sc-desc{font-size:12.8px;color:var(--muted);}
+.sec-card .sc-status{
+  position:absolute;top:12px;right:12px;width:22px;height:22px;border-radius:50%;
+  border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;
+  font-size:12px;color:#fff;
+}
+.sec-card.done .sc-status{background:var(--green);border-color:var(--green);}
+.sec-card.done{border-color:#b9e6cf;}
+/* ---------- MATCHING ---------- */
+.match-wrap{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+.match-col h4{margin-top:0;}
+.match-item{
+  border:1.5px solid var(--border);border-radius:10px;padding:9px 12px;margin-bottom:8px;
+  cursor:pointer;font-size:14px;background:#fff;transition:.15s;user-select:none;
+}
+.match-item:hover{border-color:var(--blue-soft);background:var(--pastel-2);}
+.match-item.sel{border-color:var(--blue);background:var(--pastel);box-shadow:0 0 0 3px rgba(59,125,216,.14);}
+.match-item.matched{border-color:var(--green);background:var(--green-bg);color:var(--green);cursor:default;opacity:.85;}
+.match-item.err{border-color:var(--red);background:var(--red-bg);}
+.match-item .mkey{font-weight:700;color:var(--navy);}
+.match-item.matched .mkey{color:var(--green);}
+/* ---------- MATRIX ---------- */
+.matrix-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:6px;}
+table.matrix{border-collapse:separate;border-spacing:4px;margin:0 auto;}
+table.matrix th{
+  font-size:12.5px;color:var(--navy-2);font-weight:700;padding:6px 4px;text-align:center;
+  background:transparent;white-space:nowrap;
+}
+table.matrix th.rowhead{text-align:left;min-width:118px;background:var(--pastel);border-radius:8px;padding:8px 10px;}
+table.matrix td{
+  width:58px;height:46px;border:1.5px solid var(--border);border-radius:9px;background:#fff;
+  text-align:center;vertical-align:middle;cursor:pointer;font-size:17px;color:transparent;
+  transition:.12s;user-select:none;-webkit-tap-highlight-color:transparent;
+}
+table.matrix td:hover{background:var(--pastel-2);border-color:var(--blue-soft);}
+table.matrix td.on{color:var(--blue);background:var(--pastel);border-color:var(--blue);font-weight:700;}
+table.matrix td.ok{color:var(--green);background:var(--green-bg);border-color:var(--green);}
+table.matrix td.bad{color:var(--red);background:var(--red-bg);border-color:var(--red);}
+table.matrix td.miss{border-style:dashed;border-color:var(--amber);background:var(--amber-bg);color:var(--amber);}
+.matrix-legend{display:flex;flex-wrap:wrap;gap:14px;font-size:12.5px;color:var(--muted);margin-top:12px;justify-content:center;}
+.matrix-legend span{display:inline-flex;align-items:center;gap:6px;}
+.lg-box{width:16px;height:16px;border-radius:5px;border:1.5px solid var(--border);display:inline-block;}
+.lg-box.ok{background:var(--green-bg);border-color:var(--green);}
+.lg-box.bad{background:var(--red-bg);border-color:var(--red);}
+.lg-box.miss{background:var(--amber-bg);border-color:var(--amber);border-style:dashed;}
+/* ---------- MCQ ---------- */
+.mcq-opt{
+  display:block;width:100%;text-align:left;background:#fff;border:1.5px solid var(--border);
+  border-radius:10px;padding:10px 14px;margin-bottom:8px;cursor:pointer;font-size:14.5px;
+  color:var(--text);transition:.15s;
+}
+.mcq-opt:hover{border-color:var(--blue-soft);background:var(--pastel-2);}
+.mcq-opt.sel{border-color:var(--blue);background:var(--pastel);font-weight:600;}
+.mcq-opt.ok{border-color:var(--green);background:var(--green-bg);color:var(--green);font-weight:600;}
+.mcq-opt.bad{border-color:var(--red);background:var(--red-bg);color:var(--red);}
+/* ---------- MISC ---------- */
+.badge{
+  display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:99px;
+  background:var(--pastel);color:var(--navy-2);margin-right:6px;
+}
+.badge.ok{background:var(--green-bg);color:var(--green);}
+.badge.no{background:var(--red-bg);color:var(--red);}
+.wordbank{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0;}
+.wb-chip{
+  background:#fff;border:1.5px dashed var(--blue-soft);color:var(--navy-2);border-radius:99px;
+  padding:5px 13px;font-size:13px;cursor:pointer;transition:.15s;
+}
+.wb-chip:hover{background:var(--pastel);border-style:solid;}
+.page-nav{
+  display:flex;justify-content:space-between;align-items:center;gap:10px;
+  margin-top:26px;padding-top:16px;border-top:1px solid var(--border);flex-wrap:wrap;
+}
+.page-nav .pn-right{display:flex;gap:8px;flex-wrap:wrap;}
+.note{
+  background:var(--pastel);border-left:4px solid var(--blue);border-radius:0 10px 10px 0;
+  padding:11px 14px;font-size:13.5px;color:var(--navy-2);margin:12px 0;
+}
+.note.warn{background:var(--amber-bg);border-left-color:var(--amber);color:#7a5210;}
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin-bottom:20px;}
+.kpi{background:#fff;border:1px solid var(--border);border-radius:14px;padding:16px;text-align:center;box-shadow:var(--shadow);}
+.kpi .knum{font-size:28px;font-weight:700;color:var(--blue);line-height:1.1;}
+.kpi .klbl{font-size:12.5px;color:var(--muted);margin-top:4px;}
+.mistake-item{
+  background:#fff;border:1px solid var(--border);border-left:4px solid var(--red);
+  border-radius:0 12px 12px 0;padding:12px 15px;margin-bottom:12px;
+}
+.mistake-item .mq{font-weight:600;color:var(--navy);font-size:14.5px;}
+.mistake-item .ma{font-size:14px;color:var(--green);margin-top:5px;}
+.mistake-item .mp{font-size:12px;color:var(--muted);margin-top:4px;}
+.empty-msg{text-align:center;color:var(--muted);padding:30px 10px;font-size:14.5px;}
+.footer-note{font-size:12px;color:var(--muted);text-align:center;margin-top:30px;line-height:1.7;}
+/* ---------- RESPONSIVE ---------- */
+@media (max-width:1024px){
+  .sidebar{
+    position:fixed;left:0;top:58px;bottom:0;z-index:55;transform:translateX(-100%);
+    transition:transform .25s ease;box-shadow:4px 0 18px rgba(22,50,79,.16);height:auto;
+  }
+  .sidebar.open{transform:translateX(0);}
+  .menu-btn{display:flex;align-items:center;justify-content:center;}
+  .backdrop.show{display:block;position:fixed;inset:58px 0 0 0;background:rgba(22,50,79,.35);z-index:50;}
+  .main{padding:20px 16px 70px;}
+  .match-wrap{grid-template-columns:1fr;}
+}
+@media (max-width:600px){
+  .topbar{padding:0 10px;gap:10px;}
+  .tb-name{font-size:13.5px;}
+  .topbar-progress{min-width:auto;}
+  .progress-track{width:70px;}
+  .progress-text{display:none;}
+  h1{font-size:22px;}
+  .hero{padding:20px 16px;border-radius:14px;}
+  .hero h1{font-size:22px;}
+  .main{padding:16px 12px 70px;}
+  .card{padding:14px 14px;border-radius:12px;}
+  .btn{padding:10px 14px;font-size:14px;}
+  table.matrix td{width:44px;height:42px;font-size:15px;}
+  table.matrix th{font-size:11px;}
+  table.matrix th.rowhead{min-width:92px;font-size:11.5px;padding:6px 8px;}
+  .page-nav{flex-direction:column;align-items:stretch;}
+  .page-nav .pn-right{justify-content:stretch;}
+  .page-nav .pn-right .btn{flex:1;}
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <button class="menu-btn" id="menuBtn" aria-label="Mở menu">☰</button>
+  <div class="topbar-title">
+    <span class="tb-unit">Unit 12</span>
+    <span class="tb-name">Everyday minor problems</span>
+  </div>
+  <div class="topbar-progress">
+    <div class="progress-track"><div class="progress-fill" id="topProgressFill"></div></div>
+    <span class="progress-text" id="topProgressText">0%</span>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="side-inner">
+      <div class="side-h">Bài giảng</div>
+      <button class="nav-link" data-page="overview"><span class="ico">🏠</span> Lesson Overview</button>
+      <button class="nav-link" data-page="lesson-a"><span class="ico">A</span> Things that go wrong…</button>
+      <button class="nav-link" data-page="lesson-b"><span class="ico">B</span> Everyday minor injuries</button>
+      <button class="nav-link" data-page="lesson-c"><span class="ico">C</span> Other everyday problems</button>
+      <button class="nav-link" data-page="lang-help"><span class="ico">L</span> Language help</button>
+
+      <div class="side-h">Luyện tập</div>
+      <button class="nav-link" data-page="vocab-practice"><span class="ico">V</span> Vocabulary Practice</button>
+
+      <div class="side-h">Exercises</div>
+      <button class="nav-link" data-page="ex12-1"><span class="ico">1</span> Exercise 12.1</button>
+      <button class="nav-link" data-page="ex12-2"><span class="ico">2</span> Exercise 12.2</button>
+      <button class="nav-link" data-page="ex12-3"><span class="ico">3</span> Exercise 12.3</button>
+      <button class="nav-link" data-page="ex12-4"><span class="ico">4</span> Exercise 12.4</button>
+      <button class="nav-link" data-page="ex12-5"><span class="ico">5</span> Exercise 12.5</button>
+
+      <div class="side-h">Tiến độ</div>
+      <button class="nav-link" data-page="dashboard"><span class="ico">📊</span> Dashboard</button>
+      <button class="nav-link" data-page="review"><span class="ico">🔁</span> Review Mistakes</button>
+
+      <div class="side-progress">
+        <h4>Hoàn thành</h4>
+        <div id="sideProgressList"></div>
+      </div>
+    </div>
+  </aside>
+  <div class="backdrop" id="backdrop"></div>
+
+  <main class="main" id="main">
+
+    <!-- ============ OVERVIEW ============ -->
+    <section class="page" id="page-overview">
+      <div class="hero">
+        <h1>Unit 12: Everyday minor problems</h1>
+        <p>
+          Bài giảng điện tử song ngữ Anh–Việt về những sự cố nhỏ thường gặp trong đời sống:
+          hỏng hóc trong nhà, chấn thương nhẹ và các rắc rối hằng ngày. Toàn bộ nội dung tiếng Anh
+          của Unit 12 được giữ nguyên, kèm giải thích tiếng Việt và hệ thống bài tập tương tác.
+        </p>
+        <div class="hero-progress">
+          <div class="progress-track"><div class="progress-fill" id="heroProgressFill"></div></div>
+          <div class="lbl" id="heroProgressLabel">Tiến độ: 0 / 10 phần đã hoàn thành (0%)</div>
+        </div>
+        <div class="btn-row">
+          <button class="btn" id="startBtn">▶ Start Learning</button>
+          <button class="btn ghost" id="continueBtn" style="display:none;">↻ Continue Learning</button>
+        </div>
+      </div>
+
+      <div class="card tint">
+        <h3>Mục tiêu bài học</h3>
+        <ul style="margin:0;padding-left:20px;">
+          <li>Nắm đầy đủ từ vựng về những sự cố nhỏ thường gặp trong nhà ở và đời sống.</li>
+          <li>Hiểu và dùng đúng các động từ/ danh từ chỉ hư hỏng: <em>leak, smash, crack, chip, dent, stain…</em></li>
+          <li>Phân biệt các cặp từ dễ nhầm: <em>bump vs bang, trip vs fall, bruise vs graze, cracked vs chipped</em>.</li>
+          <li>Thực hành trọn vẹn bài tập 12.1 – 12.5 với phản hồi, gợi ý và đáp án mẫu.</li>
+          <li>Theo dõi tiến độ học tập, ôn lại lỗi sai và luyện thêm từ vựng.</li>
+        </ul>
+      </div>
+
+      <h2 style="font-size:18px;">Tổng quan các phần</h2>
+      <div class="grid" id="overviewGrid"></div>
+
+      <div class="note" style="margin-top:22px;">
+        <b>Ghi chú về nội dung nguồn:</b> Toàn bộ câu tiếng Anh của Unit 12 (phần A, B, C, Language help và
+        Exercises 12.1–12.5) được hiển thị nguyên văn từ tệp nguồn bạn cung cấp, bao gồm cả chú thích trong
+        ngoặc vuông và câu hướng dẫn bài tập. Mọi phần bổ sung của ứng dụng được dán nhãn riêng:
+        <em>Vietnamese Explanation, Grammar Note, Vocabulary Note, Additional Example, Additional Practice, Answer Key</em>.
+      </div>
+      <div class="note warn">
+        <b>Minh bạch về dữ liệu đầu vào:</b> Trong tệp nguồn dạng văn bản, bảng của Exercise 12.3 bị mất cấu trúc
+        ô, nên <b>vị trí chính xác của dấu ✓ in sẵn trong sách không thể xác định chắc chắn 100%</b>. Ứng dụng
+        hiển thị dấu ✓ đó ở ô <b>clock – stopped</b> như một ví dụ mẫu, kèm ghi chú rõ ràng. Các ô còn lại do
+        người học tự đánh dấu và được đối chiếu với đáp án có giải thích.
+      </div>
+    </section>
+
+    <!-- ============ LESSON A ============ -->
+    <section class="page" id="page-lesson-a">
+      <div class="breadcrumbs">Unit 12 · <span>Section A</span></div>
+      <h1>A — Things that go wrong in houses and flats</h1>
+      <p class="subtitle">Những hỏng hóc, sự cố thường xảy ra trong nhà và căn hộ.</p>
+
+      <div class="card">
+        <span class="tag tag-orig">Original Book Content</span>
+        <h3>Section A — nguyên văn</h3>
+        <ul class="orig-list">
+          <li>This pipe's leaking.</li>
+          <li>He kicked the football too hard and it smashed a window.</li>
+          <li>This pot is cracked.</li>
+          <li>The batteries in this torch have run out / are dead. I'll have to get some more.</li>
+          <li>I'm sorry, your cup's chipped. Let me get you another one.</li>
+          <li>The lights aren't working – there's been a power cut.</li>
+          <li>The door handle's come off / fallen off.</li>
+          <li>The washing machine broke down the other day.</li>
+          <li>I'm sorry, the biscuits were at the bottom of my bag and they got crushed by the potatoes!</li>
+          <li>My computer keeps crashing today!</li>
+        </ul>
+      </div>
+
+      <details class="acc" open>
+        <summary>Vietnamese Explanation — Giải thích chi tiết từng mục</summary>
+        <div class="acc-body">
+
+          <div class="item">
+            <div class="item-en">1. This pipe's leaking.</div>
+            <div class="item-vi">Ống nước này đang bị rò rỉ.</div>
+            <div class="meta"><b>leak</b> <span class="ipa">/liːk/</span> — động từ (verb): rò rỉ, chảy ra qua một lỗ/thân nứt. Cũng là danh từ đếm được: <em>a leak</em> = chỗ rò rỉ.</div>
+            <div class="add-ex"><b>Additional Example:</b> The roof leaks every time it rains heavily. <em>(Mái nhà rò nước mỗi khi mưa to.)</em></div>
+            <div class="confuse"><b>Dễ nhầm:</b> <em>leak</em> (chất lỏng/chất khí thoát ra ngoài) ≠ <em>drip</em> (nhỏ giọt) ≠ <em>flood</em> (ngập nước, nước tràn vào diện rộng).</div>
+          </div>
+
+          <div class="item">
+            <div class="item-en">2. He kicked the football too hard and it smashed a window.</div>
+            <div class="item-vi">Cậu ấy đá bóng quá mạnh và làm vỡ tan một cửa sổ.</div>
+            <div class="meta"><b>smash</b> <span class="ipa">/smæʃ/</span> — động từ: đập vỡ, làm vỡ tan thành nhiều mảnh, thường kèm tiếng động lớn.</div>
+            <div class="add-ex"><b>Additional Example:</b> The glass smashed into a thousand pieces. <em>(Chiếc cốc vỡ tan thành nghìn mảnh.)</em></div>
+            <div class="confuse"><b>Dễ nhầm:</b> <em>smash</em> (vỡ tan, mạnh) &gt; <em>break</em> (vỡ nói chung) &gt; <em>crack</em> (nứt, chưa rời ra) &gt; <em>chip</em> (mẻ một miếng nhỏ ở cạnh).</div>
+          </div>
+
+          <div class="item">
+            <div class="item-en">3. This pot is cracked.</div>
+            <div class="item-vi">Cái nồi này bị nứt rồi.</div>
+            <div class="meta"><b>crack</b> <span class="ipa">/kræk/</span> — động từ: làm nứt, rạn (xuất hiện đường nứt nhưng chưa vỡ thành mảnh). Danh từ: <em>a crack</em> = vết nứt.</div>
+            <div class="add-ex"><b>Additional Example:</b> The mirror is cracked but it's still in one piece. <em>(Gương bị nứt nhưng vẫn còn nguyên một tấm.)</em></div>
+            <div class="confuse"><b>Dễ nhầm:</b> <em>cracked</em> (có vết nứt, còn nguyên khối) ≠ <em>chipped</em> (mẻ mất một miếng nhỏ ở cạnh) ≠ <em>smashed</em> (vỡ tan).</div>
+          </div>
+
+          <div class="item">
+            <div class="item-en">4. The batteries in this torch have run out / are dead. I'll have to get some more.</div>
+            <div class="item-vi">Pin trong đèn pin này hết rồi. Tôi sẽ phải mua thêm.</div>
+            <div class="meta"><b>run out</b> <span class="ipa">/rʌn aʊt/</span> — cụm động từ (phrasal verb): cạn, hết (pin, nhiên liệu, thời gian). <b>be dead</b> — tính từ: chết, hết điện (pin, thiết bị).</div>
+            <div class="add-ex"><b>Additional Example:</b> My phone has run out of battery — can I borrow your charger? <em>(Điện thoại tôi hết pin rồi — cho tôi mượn sạc được không?)</em></div>
+            <div class="confuse"><b>Dễ nhầm:</b> <em>run out</em> (hết, cạn) ≠ <em>be flat</em> (pin ô tô/ắc quy hết điện — cách nói phổ biến ở Anh) ≠ <em>be dead</em> (hết điện hoàn toàn, không còn chút nào).</div>
+          </div>
+
+          <div class="item">
+            <div class="item-en">5. I'm sorry, your cup's chipped. Let me get you another one.</div>
+            <div class="item-vi">Xin lỗi, cốc của bạn bị mẻ rồi. Để tôi lấy cho bạn cái khác.</div>
+            <div class="meta"><b>chip</b> <span class="ipa">/tʃɪp/</span> — động từ: làm mẻ, sứt một miếng nhỏ ở cạnh. Danh từ: <em>a chip</em> = vết mẻ. <em>(Lưu ý: "chips" số nhiều còn nghĩa là khoai tây chiên ở Anh.)</em></div>
+            <div class="add-ex"><b>Additional Example:</b> I chipped a tooth on a piece of bone. <em>(Tôi bị mẻ một cái răng vì một mẩu xương.)</em></div>
+            <div class="confuse"><b>Dễ nhầm:</b> <em>chip</em> (mẻ cạnh, mất một mẩu nhỏ) ≠ <em>crack</em> (nứt, có đường nứt) ≠ <em>dent</em> (móp, lõm kim loại).</div>
+          </div>
+
+          <div class="item">
+            <div class="item-en">6. The lights aren't working – there's been a power cut.</div>
+            <div class="item-vi">Đèn không sáng — vừa bị mất điện.</div>
+            <div class="meta"><b>power cut</b> <span class="ipa">/ˈpaʊə kʌt/</span> — danh từ đếm được: sự mất điện, cắt điện. (Tiếng Anh–Mỹ thường nói <em>power outage</em>.)</div>
+            <div class="add-ex"><b>Additional Example:</b> We had a power cut last night and all the clocks stopped. <em>(Đêm qua nhà tôi bị mất điện và tất cả đồng hồ đều dừng.)</em></div>
+          </div>
+
+          <div class="item">
+            <div class="item-en">7. The door handle's come off / fallen off.</div>
+            <div class="item-vi">Tay nắm cửa bị bong ra / rơi ra rồi.</div>
+            <div class="meta"><b>come off</b> <span class="ipa">/kʌm ɒf/</span> — cụm động từ: bong ra, tuột ra (do bị kéo, bị dùng nhiều). <b>fall off</b> <span class="ipa">/fɔːl ɒf/</span> — cụm động từ: rơi ra, rụng ra (tự nhiên).</div>
+            <div class="add-ex"><b>Additional Example:</b> One of the buttons has come off my shirt. <em>(Một chiếc cúc áo tôi bị bong ra.)</em></div>
+            <div class="confuse"><b>Dễ nhầm:</b> <em>come off</em> nhấn vào việc bị tách khỏi vật gắn liền; <em>fall off</em> nhấn vào việc rơi xuống do trọng lực. Cả hai đều dùng được cho tay nắm cửa.</div>
+          </div>
+
+          <div class="item">
+            <div class="item-en">8. The washing machine broke down the other day.</div>
+            <div class="item-vi">Cái máy giặt bị hỏng mấy hôm trước.</div>
+            <div class="meta"><b>break down</b> <span class="ipa">/breɪk daʊn/</span> — cụm động từ: (máy móc, xe cộ) hỏng, ngừng hoạt động.</div>
+            <div class="add-ex"><b>Additional Example:</b> My car broke down on the motorway. <em>(Xe tôi bị hỏng trên đường cao tốc.)</em></div>
+            <div class="confuse"><b>Dễ nhầm:</b> <em>break down</em> (máy móc/xe cộ hỏng) ≠ <em>crash</em> (máy tính treo/sập; hoặc xe đâm nhau) ≠ <em>stop working</em> (ngừng hoạt động — trung tính hơn).</div>
+          </div>
+
+          <div class="item">
+            <div class="item-en">9. I'm sorry, the biscuits were at the bottom of my bag and they got crushed by the potatoes!</div>
+            <div class="item-vi">Xin lỗi, bánh quy nằm dưới đáy túi nên bị khoai tây đè bẹp nát!</div>
+            <div class="meta"><b>crush</b> <span class="ipa">/krʌʃ/</span> — động từ: đè bẹp, làm nát, làm bẹp do sức nặng. Ở đây dùng dạng bị động <em>got crushed</em>.</div>
+            <div class="add-ex"><b>Additional Example:</b> The box was crushed in the post. <em>(Cái hộp bị bẹp trong lúc gửi bưu phẩm.)</em></div>
+            <div class="confuse"><b>Dễ nhầm:</b> <em>crush</em> (đè bẹp nát) ≠ <em>dent</em> (móp một chỗ, kim loại) ≠ <em>smash</em> (đập vỡ tan).</div>
+          </div>
+
+          <div class="item">
+            <div class="item-en">10. My computer keeps crashing today!</div>
+            <div class="item-vi">Hôm nay máy tính của tôi cứ bị treo/sập liên tục!</div>
+            <div class="meta"><b>crash</b> <span class="ipa">/kræʃ/</span> — động từ: (máy tính/chương trình) đột ngột ngừng hoạt động, sập nguồn. Nghĩa khác: đâm xe. Danh từ: <em>a crash</em>.</div>
+            <div class="add-ex"><b>Additional Example:</b> The program crashed and I lost all my work. <em>(Chương trình bị sập và tôi mất hết bài làm.)</em></div>
+            <div class="confuse"><b>Grammar Note:</b> <em>keep + V-ing</em> = làm gì liên tục, lặp đi lặp lại. <em>My computer keeps crashing</em> = máy tính tôi cứ sập mãi.</div>
+          </div>
+
+        </div>
+      </details>
+
+      <div class="card">
+        <span class="tag tag-gram">Grammar / Vocabulary Note</span>
+        <h3>Bảng tổng hợp nhanh — Section A</h3>
+        <div class="scroll-x">
+          <table class="data">
+            <thead><tr><th>Từ / cụm từ</th><th>Loại</th><th>IPA</th><th>Nghĩa tiếng Việt</th><th>Ví dụ</th></tr></thead>
+            <tbody>
+              <tr><td>leak</td><td>v / n</td><td>/liːk/</td><td>rò rỉ; chỗ rò rỉ</td><td>The pipe's leaking.</td></tr>
+              <tr><td>smash</td><td>v</td><td>/smæʃ/</td><td>đập vỡ tan</td><td>It smashed a window.</td></tr>
+              <tr><td>crack</td><td>v / n</td><td>/kræk/</td><td>làm nứt; vết nứt</td><td>This pot is cracked.</td></tr>
+              <tr><td>run out</td><td>phr v</td><td>/rʌn aʊt/</td><td>hết, cạn</td><td>The batteries have run out.</td></tr>
+              <tr><td>be dead</td><td>adj</td><td>/ded/</td><td>hết điện, chết</td><td>The batteries are dead.</td></tr>
+              <tr><td>chip</td><td>v / n</td><td>/tʃɪp/</td><td>làm mẻ; vết mẻ</td><td>Your cup's chipped.</td></tr>
+              <tr><td>power cut</td><td>n</td><td>/ˈpaʊə kʌt/</td><td>sự mất điện</td><td>There's been a power cut.</td></tr>
+              <tr><td>come off</td><td>phr v</td><td>/kʌm ɒf/</td><td>bong ra, tuột ra</td><td>The handle's come off.</td></tr>
+              <tr><td>fall off</td><td>phr v</td><td>/fɔːl ɒf/</td><td>rơi ra</td><td>The handle's fallen off.</td></tr>
+              <tr><td>break down</td><td>phr v</td><td>/breɪk daʊn/</td><td>hỏng (máy móc)</td><td>The washing machine broke down.</td></tr>
+              <tr><td>crush</td><td>v</td><td>/krʌʃ/</td><td>đè bẹp, làm nát</td><td>They got crushed by the potatoes.</td></tr>
+              <tr><td>crash</td><td>v / n</td><td>/kræʃ/</td><td>treo máy; đâm xe</td><td>My computer keeps crashing.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ LESSON B ============ -->
+    <section class="page" id="page-lesson-b">
+      <div class="breadcrumbs">Unit 12 · <span>Section B</span></div>
+      <h1>B — Everyday minor injuries</h1>
+      <p class="subtitle">Những chấn thương nhẹ thường gặp trong sinh hoạt hằng ngày.</p>
+
+      <div class="card">
+        <span class="tag tag-orig">Original Book Content</span>
+        <h3>Section B — nguyên văn</h3>
+        <p class="orig-en">She twisted her ankle coming down the stairs. I bumped/banged my head against the cupboard door and got a bruise. [bru:z/ dark area on your skin where you have hurt yourself]</p>
+        <p class="orig-en" style="margin-bottom:0;">Kelly tripped and fell down and grazed her knee this morning. [if you trip you almost fall down because you hit your foot against something; if you graze something, it becomes red with broken skin, but no blood]</p>
+      </div>
+
+      <details class="acc" open>
+        <summary>Vietnamese Explanation — Giải thích chi tiết</summary>
+        <div class="acc-body">
+
+          <div class="item">
+            <div class="item-en">twist your ankle</div>
+            <div class="item-vi">bị trẹo/bong gân mắt cá chân</div>
+            <div class="meta"><b>twist</b> <span class="ipa">/twɪst/</span> — động từ: vặn, xoắn. <b>ankle</b> <span class="ipa">/ˈæŋkl/</span> — danh từ: mắt cá chân.</div>
+            <div class="add-ex"><b>Additional Example:</b> I twisted my ankle playing football and it swelled up. <em>(Tôi bị trẹo mắt cá chân khi chơi bóng và nó sưng lên.)</em></div>
+            <div class="confuse"><b>Vocabulary Note:</b> <em>twist your ankle</em> = cử động sai hướng làm đau dây chằng, <b>không</b> rách da. Khác với <em>graze</em> (xước da) và <em>bruise</em> (bầm tím).</div>
+          </div>
+
+          <div class="item">
+            <div class="item-en">bump your head / bang your head</div>
+            <div class="item-vi">va/đập đầu vào vật gì đó</div>
+            <div class="meta"><b>bump</b> <span class="ipa">/bʌmp/</span> — động từ: va vào, đụng vào (thường nhẹ hơn). <b>bang</b> <span class="ipa">/bæŋ/</span> — động từ: đập mạnh, va mạnh gây tiếng động.</div>
+            <div class="add-ex"><b>Additional Example:</b> I banged my head on the low door and saw stars. <em>(Tôi đập đầu vào cánh cửa thấp và thấy hoa mắt.)</em></div>
+            <div class="confuse"><b>Dễ nhầm:</b> xem bảng <em>bump vs bang</em> bên dưới.</div>
+          </div>
+
+          <div class="item">
+            <div class="item-en">bruise</div>
+            <div class="item-vi">vết bầm tím (trên da)</div>
+            <div class="meta"><b>bruise</b> <span class="ipa">/bruːz/</span> — danh từ đếm được: vùng da sẫm màu do bị va đập. Động từ: <em>to bruise</em> = làm bầm tím.</div>
+            <div class="add-ex"><b>Additional Example:</b> She had a big bruise on her arm where she hit the shelf. <em>(Cô ấy có một vết bầm to ở tay chỗ va vào giá.)</em></div>
+            <div class="confuse"><b>Dễ nhầm:</b> <em>bruise</em> = da sẫm màu, <b>không</b> rách da; <em>graze</em> = da bị rách nhẹ, đỏ lên nhưng không chảy máu.</div>
+          </div>
+
+          <div class="item">
+            <div class="item-en">trip</div>
+            <div class="item-vi">vấp, hụt chân</div>
+            <div class="meta"><b>trip</b> <span class="ipa">/trɪp/</span> — động từ: vấp phải vật gì đó và gần như ngã. Danh từ: <em>a trip</em> = chuyến đi (nghĩa khác hoàn toàn).</div>
+            <div class="add-ex"><b>Additional Example:</b> I tripped over a cable and dropped the tray. <em>(Tôi vấp phải sợi dây và đánh rơi cái khay.)</em></div>
+            <div class="confuse"><b>Vocabulary Note:</b> <em>trip over / trip on</em> something = vấp phải cái gì. <em>trip</em> chỉ là gần ngã, chưa chắc đã ngã.</div>
+          </div>
+
+          <div class="item">
+            <div class="item-en">fall down</div>
+            <div class="item-vi">ngã xuống</div>
+            <div class="meta"><b>fall down</b> <span class="ipa">/fɔːl daʊn/</span> — cụm động từ: ngã, rơi xuống. Quá khứ: <em>fell down</em>.</div>
+            <div class="add-ex"><b>Additional Example:</b> He fell down the stairs and broke his glasses. <em>(Anh ấy ngã cầu thang và làm vỡ kính.)</em></div>
+            <div class="confuse"><b>Dễ nhầm:</b> <em>trip</em> = vấp (nguyên nhân, chưa chắc ngã); <em>fall down</em> = ngã (kết quả). Trong câu gốc: <em>Kelly tripped and fell down</em> — vừa vấp vừa ngã.</div>
+          </div>
+
+          <div class="item">
+            <div class="item-en">graze your knee</div>
+            <div class="item-vi">bị xước/trầy đầu gối</div>
+            <div class="meta"><b>graze</b> <span class="ipa">/ɡreɪz/</span> — động từ: làm xước da nhẹ (đỏ lên, rách da một chút nhưng không chảy máu). Danh từ: <em>a graze</em> = vết xước. <em>(Lưu ý: "graze" còn nghĩa là cho gia súc ăn cỏ — nghĩa khác hoàn toàn.)</em></div>
+            <div class="add-ex"><b>Additional Example:</b> I grazed my elbow when I fell off my bike. <em>(Tôi bị xước cùi chỏ khi ngã xe đạp.)</em></div>
+            <div class="confuse"><b>Dễ nhầm:</b> <em>graze</em> (rách da nhẹ, không máu) ≠ <em>cut</em> (đứt, chảy máu) ≠ <em>bruise</em> (bầm, không rách da).</div>
+          </div>
+
+        </div>
+      </details>
+
+      <div class="card">
+        <span class="tag tag-gram">Grammar / Vocabulary Note</span>
+        <h3>Bảng phân biệt các từ dễ nhầm</h3>
+
+        <h4>1. bump vs bang</h4>
+        <div class="scroll-x">
+          <table class="data">
+            <thead><tr><th></th><th>bump</th><th>bang</th></tr></thead>
+            <tbody>
+              <tr><td>Mức độ</td><td>va chạm nhẹ, thường không chủ ý</td><td>đập mạnh, gây tiếng động lớn</td></tr>
+              <tr><td>Nghĩa</td><td>đụng, va vào</td><td>đập mạnh vào</td></tr>
+              <tr><td>Ví dụ</td><td>I bumped my head against the cupboard door.</td><td>I banged my head on the shelf.</td></tr>
+              <tr><td>Ghi chú</td><td colspan="2">Cả hai đều dùng được với <em>your head / your knee / your elbow</em>. Trong câu gốc của sách, hai từ được viết <em>bumped/banged</em> nghĩa là cả hai đều chấp nhận được.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h4>2. trip vs fall</h4>
+        <div class="scroll-x">
+          <table class="data">
+            <thead><tr><th></th><th>trip</th><th>fall (down)</th></tr></thead>
+            <tbody>
+              <tr><td>Nghĩa</td><td>vấp phải vật gì đó, gần như ngã</td><td>ngã xuống</td></tr>
+              <tr><td>Kết quả</td><td>có thể chưa ngã</td><td>đã ngã</td></tr>
+              <tr><td>Cấu trúc</td><td>trip over / on something</td><td>fall down / fall over / fall off something</td></tr>
+              <tr><td>Ví dụ</td><td>She tripped on a stone.</td><td>She fell down and hurt her knee.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h4>3. bruise vs graze</h4>
+        <div class="scroll-x">
+          <table class="data">
+            <thead><tr><th></th><th>bruise</th><th>graze</th></tr></thead>
+            <tbody>
+              <tr><td>Da</td><td>nguyên vẹn, sẫm màu</td><td>rách nhẹ, đỏ lên</td></tr>
+              <tr><td>Máu</td><td>không chảy máu ngoài (có thể tụ máu dưới da)</td><td>không chảy máu (theo chú thích của sách)</td></tr>
+              <tr><td>Ví dụ</td><td>I got a bruise on my arm.</td><td>She grazed her knee.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h4>4. cracked vs chipped</h4>
+        <div class="scroll-x">
+          <table class="data">
+            <thead><tr><th></th><th>cracked</th><th>chipped</th></tr></thead>
+            <tbody>
+              <tr><td>Tình trạng</td><td>có đường nứt, vẫn còn nguyên khối</td><td>mẻ mất một miếng nhỏ ở cạnh</td></tr>
+              <tr><td>Ví dụ</td><td>This pot is cracked.</td><td>Your cup's chipped.</td></tr>
+              <tr><td>Ghi chú</td><td colspan="2">Một vật có thể vừa <em>cracked</em> vừa <em>chipped</em>: cái cốc có thể nứt một đường và mẻ một miếng ở miệng cốc.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ LESSON C ============ -->
+    <section class="page" id="page-lesson-c">
+      <div class="breadcrumbs">Unit 12 · <span>Section C</span></div>
+      <h1>C — Other everyday minor problems</h1>
+      <p class="subtitle">Những rắc rối nhỏ khác trong đời sống hằng ngày.</p>
+
+      <div class="card">
+        <span class="tag tag-orig">Original Book Content</span>
+        <h3>Section C — nguyên văn</h3>
+        <ul class="orig-list">
+          <li>I've mislaid my memory stick. Have you seen it anywhere? [put it somewhere and can't find it]</li>
+          <li>She spilt some coffee on the carpet. I hope it doesn't leave a stain. [permanent mark]</li>
+          <li>The sink is blocked. [the water will not run away]</li>
+          <li>I'm afraid I've dented your car. I'm really sorry. I'll pay for the repairs. [bent the metal a little bit by hitting something]</li>
+          <li>My mouse has stopped working; it could be a software problem.</li>
+          <li>I've locked myself out. Can I use your phone to ring my wife?</li>
+          <li>The car won't start. I hope it's nothing serious. Perhaps the battery's flat.</li>
+          <li>The kitchen clock's slow/fast/stopped. What time d'you make it?</li>
+        </ul>
+      </div>
+
+      <details class="acc" open>
+        <summary>Vietnamese Explanation — Giải thích chi tiết</summary>
+        <div class="acc-body">
+
+          <div class="item">
+            <div class="item-en">I've mislaid my memory stick.</div>
+            <div class="item-vi">Tôi để quên/để lạc mất cái USB của mình rồi.</div>
+            <div class="meta"><b>mislay</b> <span class="ipa">/ˌmɪsˈleɪ/</span> — động từ (quá khứ <em>mislaid</em>): để đâu đó rồi không tìm thấy nữa (nhưng có thể sẽ tìm ra).</div>
+            <div class="add-ex"><b>Additional Example:</b> I've mislaid my glasses again — they're probably on the sofa. <em>(Tôi lại để quên kính rồi — chắc là ở trên ghế sofa.)</em></div>
+            <div class="confuse"><b>Dễ nhầm:</b> <em>mislay</em> = để lạc, tạm thời không tìm thấy ≠ <em>lose</em> = mất hẳn. <em>memory stick</em> (BrE) = USB, còn gọi là <em>flash drive</em> (AmE).</div>
+          </div>
+
+          <div class="item">
+            <div class="item-en">She spilt some coffee on the carpet. I hope it doesn't leave a stain.</div>
+            <div class="item-vi">Cô ấy làm đổ cà phê lên thảm. Mong là nó không để lại vết bẩn.</div>
+            <div class="meta"><b>spill</b> <span class="ipa">/spɪl/</span> — động từ: làm đổ, làm tràn (chất lỏng). Quá khứ: <em>spilt</em> (BrE) hoặc <em>spilled</em> (AmE). <b>stain</b> <span class="ipa">/steɪn/</span> — danh từ: vết bẩn lâu dài, khó tẩy; động từ: làm bẩn, để lại vết.</div>
+            <div class="add-ex"><b>Additional Example:</b> Be careful not to spill the soup — it will stain the tablecloth. <em>(Cẩn thận đừng làm đổ súp — nó sẽ để lại vết trên khăn trải bàn.)</em></div>
+            <div class="confuse"><b>Dễ nhầm:</b> <em>stain</em> = vết bẩn lâu dài (permanent mark) ≠ <em>mark</em> = vết nói chung ≠ <em>spot</em> = vết nhỏ, có thể giặt sạch.</div>
+          </div>
+
+          <div class="item">
+            <div class="item-en">The sink is blocked.</div>
+            <div class="item-vi">Bồn rửa bị tắc rồi.</div>
+            <div class="meta"><b>blocked</b> <span class="ipa">/blɒkt/</span> — tính từ (từ động từ <em>block</em>): bị tắc, bị chặn. Nghĩa trong sách: nước không thoát được.</div>
+            <div class="add-ex"><b>Additional Example:</b> The drain is blocked with leaves. <em>(Cống bị tắc vì lá cây.)</em></div>
+            <div class="confuse"><b>Dễ nhầm:</b> <em>blocked</em> (tắc, không thoát được) ≠ <em>broken</em> (hỏng, không hoạt động). Trong bài tập lỗi sai, nói <em>The sink is broken</em> khi ý là tắc nước là <b>sai</b>.</div>
+          </div>
+
+          <div class="item">
+            <div class="item-en">I'm afraid I've dented your car. I'm really sorry. I'll pay for the repairs.</div>
+            <div class="item-vi">Tôi e là tôi đã làm móp xe của bạn. Tôi thực sự xin lỗi. Tôi sẽ trả tiền sửa.</div>
+            <div class="meta"><b>dent</b> <span class="ipa">/dent/</span> — động từ: làm móp, làm lõm kim loại do va đập. Danh từ: <em>a dent</em> = vết móp.</div>
+            <div class="add-ex"><b>Additional Example:</b> There's a dent in the door where the bike hit it. <em>(Có một vết móp ở cửa chỗ xe đạp đâm vào.)</em></div>
+            <div class="confuse"><b>Dễ nhầm:</b> <em>dent</em> (móp kim loại, vẫn còn nguyên) ≠ <em>crack</em> (nứt) ≠ <em>crush</em> (bẹp nát hoàn toàn) ≠ <em>scratch</em> (xước bề mặt).</div>
+          </div>
+
+          <div class="item">
+            <div class="item-en">My mouse has stopped working; it could be a software problem.</div>
+            <div class="item-vi">Chuột máy tính của tôi ngừng hoạt động; có thể là vấn đề phần mềm.</div>
+            <div class="meta"><b>stop working</b> — ngừng hoạt động (cách nói trung tính, dùng cho mọi thiết bị). <em>has stopped working</em> = thì hiện tại hoàn thành, nhấn vào kết quả hiện tại.</div>
+            <div class="add-ex"><b>Additional Example:</b> My keyboard has stopped working, so I'm using the on-screen one. <em>(Bàn phím của tôi ngừng hoạt động nên tôi đang dùng bàn phím ảo.)</em></div>
+          </div>
+
+          <div class="item">
+            <div class="item-en">I've locked myself out. Can I use your phone to ring my wife?</div>
+            <div class="item-vi">Tôi bị khóa cửa ngoài rồi (không vào được nhà). Tôi dùng điện thoại của bạn gọi cho vợ tôi được không?</div>
+            <div class="meta"><b>lock yourself out</b> — tự khóa cửa và bị nhốt ở ngoài. Cấu trúc: <em>lock + oneself + out</em>. Ngược lại: <em>lock yourself in</em> = bị nhốt ở trong.</div>
+            <div class="add-ex"><b>Additional Example:</b> I locked myself out of the flat and had to wait for my roommate. <em>(Tôi bị khóa ngoài căn hộ và phải đợi bạn cùng phòng.)</em></div>
+            <div class="confuse"><b>Grammar Note:</b> đại từ phản thân phải hợp với chủ ngữ: <em>I locked <b>myself</b> out / She locked <b>herself</b> out / We locked <b>ourselves</b> out.</em></div>
+          </div>
+
+          <div class="item">
+            <div class="item-en">The car won't start. I hope it's nothing serious. Perhaps the battery's flat.</div>
+            <div class="item-vi">Xe ô tô không khởi động được. Mong là không có gì nghiêm trọng. Có lẽ ắc quy hết điện.</div>
+            <div class="meta"><b>flat battery</b> <span class="ipa">/flæt ˈbætəri/</span> — cụm danh từ (BrE): ắc quy/pin hết điện. (AmE thường nói <em>a dead battery</em>.) <em>won't start</em> = không chịu khởi động (won't = sự từ chối của vật, không phải ý chí con người).</div>
+            <div class="add-ex"><b>Additional Example:</b> I left the lights on all night and now the battery is flat. <em>(Tôi để đèn sáng cả đêm nên giờ ắc quy hết điện.)</em></div>
+          </div>
+
+          <div class="item">
+            <div class="item-en">The kitchen clock's slow/fast/stopped. What time d'you make it?</div>
+            <div class="item-vi">Đồng hồ nhà bếp chạy chậm/nhanh/đứng rồi. Bạn nghĩ bây giờ là mấy giờ?</div>
+            <div class="meta"><b>slow</b> <span class="ipa">/sləʊ/</span> — chậm (chỉ giờ ít hơn thực tế). <b>fast</b> <span class="ipa">/fɑːst/</span> — nhanh (chỉ giờ nhiều hơn thực tế). <b>stopped</b> <span class="ipa">/stɒpt/</span> — đứng, không chạy nữa.</div>
+            <div class="add-ex"><b>Additional Example:</b> My watch is five minutes fast, so I'm always early. <em>(Đồng hồ đeo tay tôi nhanh 5 phút nên tôi luôn đến sớm.)</em></div>
+            <div class="confuse"><b>Vocabulary Note:</b> <em>What time d'you make it?</em> = What time do you make it? (khẩu ngữ) — "Bạn nghĩ bây giờ là mấy giờ?" Đây là cách hỏi giờ rất tự nhiên trong tiếng Anh–Anh.</div>
+          </div>
+
+        </div>
+      </details>
+    </section>
+
+    <!-- ============ LANGUAGE HELP ============ -->
+    <section class="page" id="page-lang-help">
+      <div class="breadcrumbs">Unit 12 · <span>Language help</span></div>
+      <h1>Language help</h1>
+      <p class="subtitle">Từ vựng vừa là động từ vừa là danh từ đếm được.</p>
+
+      <div class="card">
+        <span class="tag tag-orig">Original Book Content</span>
+        <p class="orig-en" style="margin-bottom:8px;">Words often belong to more than one word class. In this unit, the following words can be used as verbs or as countable nouns:</p>
+        <p class="orig-en" style="margin-bottom:8px;"><b>flood crack chip bump bang bruise graze dent stain lock</b></p>
+        <p class="orig-en" style="margin-bottom:0;">Always make a special note of any word that belongs to more than one word class.</p>
+      </div>
+
+      <div class="card">
+        <span class="tag tag-vi">Vietnamese Explanation</span>
+        <p>Trong tiếng Anh, rất nhiều từ có thể thuộc <b>nhiều hơn một từ loại</b>. Mười từ dưới đây vừa là <b>động từ (verb)</b> vừa là <b>danh từ đếm được (countable noun)</b>. Nghĩa của chúng có liên quan với nhau nhưng <b>cách dùng ngữ pháp khác nhau</b>, nên cần ghi chú riêng.</p>
+        <div class="note warn">
+          <b>Lưu ý quan trọng:</b> Không phải từ nào cũng dùng được trong mọi cấu trúc giống nhau. Ví dụ <em>lock</em> là danh từ đếm được (ổ khóa) nhưng cũng có danh từ <em>a lock of hair</em> (một mớ tóc) với nghĩa hoàn toàn khác; <em>chip</em> số nhiều <em>chips</em> lại có nghĩa "khoai tây chiên" ở Anh. Hãy đọc kỹ cột ghi chú.
+        </div>
+      </div>
+
+      <div class="card">
+        <span class="tag tag-gram">Vocabulary Note</span>
+        <h3>Bảng từ vựng tương tác — Verb &amp; Noun</h3>
+        <div class="scroll-x">
+          <table class="data" id="langHelpTable">
+            <thead>
+              <tr>
+                <th style="min-width:96px;">Từ</th>
+                <th style="min-width:70px;">IPA</th>
+                <th style="min-width:150px;">Danh từ (noun)</th>
+                <th style="min-width:150px;">Động từ (verb)</th>
+                <th style="min-width:130px;">Nghĩa tiếng Việt</th>
+                <th style="min-width:170px;">Ví dụ — danh từ</th>
+                <th style="min-width:170px;">Ví dụ — động từ</th>
+              </tr>
+            </thead>
+            <tbody id="langHelpBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ VOCAB PRACTICE ============ -->
+    <section class="page" id="page-vocab-practice">
+      <div class="breadcrumbs">Unit 12 · <span>Vocabulary Practice</span></div>
+      <h1>Vocabulary Practice</h1>
+      <p class="subtitle">Luyện thêm từ vựng sau khi đã học xong phần lý thuyết.</p>
+      <div class="note"><span class="tag tag-add" style="margin-bottom:0;">Additional Practice</span> &nbsp;Toàn bộ bài tập trong trang này do ứng dụng tạo thêm để luyện tập. Chúng <b>không</b> thay thế các bài tập gốc 12.1–12.5.</div>
+
+      <div class="card">
+        <h3>1. Matching — Nối từ với nghĩa</h3>
+        <p style="font-size:13.5px;color:var(--muted);">Nhấn vào một từ ở cột trái, sau đó nhấn vào định nghĩa tương ứng ở cột phải.</p>
+        <div class="match-wrap">
+          <div class="match-col"><h4>Từ</h4><div id="matchLeft"></div></div>
+          <div class="match-col"><h4>Định nghĩa</h4><div id="matchRight"></div></div>
+        </div>
+        <div class="fb" id="matchFb"></div>
+        <div class="btn-row"><button class="btn ghost small" id="matchReset">↺ Làm lại phần Matching</button></div>
+      </div>
+
+      <div class="card">
+        <h3>2. Choose the correct word — Chọn từ đúng</h3>
+        <div id="mcq1"></div>
+      </div>
+
+      <div class="card">
+        <h3>3. Fill in the blanks — Điền từ còn thiếu</h3>
+        <div id="fillBlanks"></div>
+      </div>
+
+      <div class="card">
+        <h3>4. Error correction — Tìm và sửa lỗi</h3>
+        <p style="font-size:13.5px;color:var(--muted);">Mỗi câu dưới đây có một từ dùng sai. Hãy viết lại cả câu cho đúng.</p>
+        <div id="errFix"></div>
+      </div>
+
+      <div class="card">
+        <h3>5. Context practice — Chọn từ theo ngữ cảnh</h3>
+        <div id="mcq2"></div>
+      </div>
+    </section>
+
+    <!-- ============ EXERCISE 12.1 ============ -->
+    <section class="page" id="page-ex12-1">
+      <div class="breadcrumbs">Unit 12 · Exercises · <span>Exercise 12.1</span></div>
+      <h1>Exercise 12.1 — What do you think happened?</h1>
+      <div class="card">
+        <span class="tag tag-orig">Original Book Content</span>
+        <p class="orig-en" style="margin-bottom:0;"><b>12.1</b> What do you think happened to make these people do/say what they did?</p>
+      </div>
+      <div class="note">Viết câu trả lời bằng tiếng Anh. Câu số 1 đã có đáp án mẫu in trong sách. Ứng dụng chấp nhận nhiều cách diễn đạt tương đương.</div>
+      <div id="ex121List"></div>
+    </section>
+
+    <!-- ============ EXERCISE 12.2 ============ -->
+    <section class="page" id="page-ex12-2">
+      <div class="breadcrumbs">Unit 12 · Exercises · <span>Exercise 12.2</span></div>
+      <h1>Exercise 12.2 — Odd one out</h1>
+      <div class="card">
+        <span class="tag tag-orig">Original Book Content</span>
+        <p class="orig-en" style="margin-bottom:0;"><b>12.2</b> Odd one out. Which of the three words is the odd one out in each case?</p>
+      </div>
+      <div class="note">Nhấn vào từ mà bạn cho là <b>khác loại</b> trong mỗi nhóm. Sau khi chọn, bạn sẽ nhận phản hồi và giải thích nghĩa của cả ba từ.</div>
+      <div id="ex122List"></div>
+    </section>
+
+    <!-- ============ EXERCISE 12.3 ============ -->
+    <section class="page" id="page-ex12-3">
+      <div class="breadcrumbs">Unit 12 · Exercises · <span>Exercise 12.3</span></div>
+      <h1>Exercise 12.3 — Matrix</h1>
+      <div class="card">
+        <span class="tag tag-orig">Original Book Content</span>
+        <p class="orig-en"><b>12.3</b> Here is a matrix with the names of things and things that can go wrong with them. Put a tick (✓) for things that typically go together.</p>
+        <div class="scroll-x">
+          <table class="data" style="max-width:760px;">
+            <thead><tr><th>car</th><th>vase</th><th>elbow</th><th>clock</th><th>printer</th><th>sink</th><th>a meal</th></tr></thead>
+            <tbody>
+              <tr><td>banged</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+              <tr><td>ruined</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+              <tr><td>cracked</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+              <tr><td>broken down</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+              <tr><td>dented</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+              <tr><td>stopped</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+              <tr><td>✓</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+              <tr><td>blocked</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="orig-en" style="margin-bottom:0;">Write five sentences using combinations of words where you wrote a tick.<br>EXAMPLE This clock has stopped – perhaps it needs new batteries.</p>
+      </div>
+
+      <div class="note warn">
+        <b>Ghi chú minh bạch:</b> Trong bản nguồn dạng văn bản, dấu <b>✓</b> in sẵn xuất hiện trên một dòng riêng giữa hàng <em>stopped</em> và hàng <em>blocked</em>, nên vị trí ô chính xác bị mất. Ứng dụng hiển thị dấu ✓ mẫu ở ô <b>clock – stopped</b> (phù hợp nhất với ví dụ mẫu của sách) và ghi rõ đây là <em>dấu ✓ in sẵn, không phải đáp án do bạn chọn</em>.
+      </div>
+
+      <div class="card">
+        <span class="tag tag-add">Interactive Matrix</span>
+        <h3>Nhấn vào ô để đánh dấu ✓ hoặc bỏ dấu</h3>
+        <div class="matrix-wrap">
+          <table class="matrix" id="matrixTable"></table>
+        </div>
+        <div class="matrix-legend">
+          <span><i class="lg-box"></i> Chưa đánh dấu</span>
+          <span><i class="lg-box ok"></i> Đúng</span>
+          <span><i class="lg-box bad"></i> Không tự nhiên</span>
+          <span><i class="lg-box miss"></i> Còn thiếu</span>
+        </div>
+        <div class="btn-row">
+          <button class="btn" id="checkMatrixBtn">✓ Check Matrix</button>
+          <button class="btn ghost" id="clearMatrixBtn">↺ Xóa hết dấu</button>
+        </div>
+        <div class="fb" id="matrixFb"></div>
+      </div>
+
+      <div class="card">
+        <span class="tag tag-orig">Original Book Content</span>
+        <h3>Write five sentences</h3>
+        <p>Viết 5 câu dùng các kết hợp từ mà bạn đã đánh dấu ✓.</p>
+        <div id="matrixWriting"></div>
+      </div>
+    </section>
+
+    <!-- ============ EXERCISE 12.4 ============ -->
+    <section class="page" id="page-ex12-4">
+      <div class="breadcrumbs">Unit 12 · Exercises · <span>Exercise 12.4</span></div>
+      <h1>Exercise 12.4 — Complete the sentences</h1>
+      <div class="card">
+        <span class="tag tag-orig">Original Book Content</span>
+        <p class="orig-en" style="margin-bottom:0;"><b>12.4</b> Complete these sentences using words and phrases from the opposite page.</p>
+      </div>
+      <div class="note">Câu số 1 đã có đáp án in sẵn trong sách. Có thể dùng <b>Word Bank</b> gợi ý từ. Ứng dụng không phân biệt chữ hoa/chữ thường.</div>
+      <div class="card">
+        <div class="btn-row" style="margin-top:0;">
+          <button class="btn ghost small" id="toggleWordBank">📚 Show / Hide Word Bank</button>
+        </div>
+        <div class="wordbank" id="wordBank" style="display:none;"></div>
+      </div>
+      <div id="ex124List"></div>
+      <div class="btn-row"><button class="btn" id="check124">✓ Check All</button><button class="btn ghost" id="showAll124">👁 Show All Answers</button></div>
+      <div class="fb" id="fb124"></div>
+    </section>
+
+    <!-- ============ EXERCISE 12.5 ============ -->
+    <section class="page" id="page-ex12-5">
+      <div class="breadcrumbs">Unit 12 · Exercises · <span>Exercise 12.5</span></div>
+      <h1>Exercise 12.5 — Over to you</h1>
+      <div class="card">
+        <span class="tag tag-orig">Original Book Content</span>
+        <p class="orig-en" style="margin-bottom:0;"><b>12.5</b> Over to you<br>What would you do if…</p>
+      </div>
+      <div class="note">
+        Đây là bài viết tự do. Ứng dụng đánh giá <b>tự động ở mức cơ bản</b> dựa trên: độ dài câu, việc dùng từ vựng trọng tâm của tình huống,
+        và cấu trúc câu điều kiện. <b>Đây không phải là chấm ngôn ngữ hoàn hảo</b> — hãy luôn so sánh với câu trả lời mẫu.
+      </div>
+      <div id="ex125List"></div>
+    </section>
+
+    <!-- ============ DASHBOARD ============ -->
+    <section class="page" id="page-dashboard">
+      <div class="breadcrumbs">Unit 12 · <span>Dashboard</span></div>
+      <h1>Dashboard tiến độ học tập</h1>
+      <div class="kpi-row">
+        <div class="kpi"><div class="knum" id="kpiPct">0%</div><div class="klbl">Hoàn thành</div></div>
+        <div class="kpi"><div class="knum" id="kpiDone">0</div><div class="klbl">Phần đã xong</div></div>
+        <div class="kpi"><div class="knum" id="kpiTotal">10</div><div class="klbl">Tổng số phần</div></div>
+        <div class="kpi"><div class="knum" id="kpiMistakes" style="color:var(--red);">0</div><div class="klbl">Câu cần ôn lại</div></div>
+      </div>
+
+      <div class="card">
+        <h3>Trạng thái từng phần</h3>
+        <div id="dashList"></div>
+      </div>
+
+      <div class="card">
+        <h3>Quản lý tiến độ</h3>
+        <p style="font-size:13.5px;color:var(--muted);">Tiến độ được lưu tự động trên thiết bị này bằng <code>localStorage</code>. Không cần đăng nhập, không cần internet sau khi trang đã tải xong.</p>
+        <div class="btn-row">
+          <button class="btn amber" id="reviewBtn">🔁 Review Mistakes</button>
+          <button class="btn danger" id="resetBtn">🗑 Reset Progress</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ REVIEW ============ -->
+    <section class="page" id="page-review">
+      <div class="breadcrumbs">Unit 12 · <span>Review Mistakes</span></div>
+      <h1>Ôn lại các câu đã làm sai</h1>
+      <p class="subtitle">Danh sách này được cập nhật tự động mỗi khi bạn trả lời sai một câu.</p>
+      <div id="reviewList"></div>
+      <div class="btn-row"><button class="btn ghost" id="clearMistakesBtn">🗑 Xóa danh sách lỗi</button></div>
+    </section>
+
+  </main>
+</div>
+
+<script>
+"use strict";
+
+/* =========================================================
+   1. HẰNG SỐ & TRẠNG THÁI
+   ========================================================= */
+const STORAGE_KEY = "u12_everyday_minor_problems_v1";
+
+const SECTIONS = [
+  { id:"lesson-a",       page:"lesson-a",       short:"A · Houses & flats",     title:"A — Things that go wrong in houses and flats", desc:"Từ vựng về hỏng hóc trong nhà: leak, smash, crack, chip, power cut…" },
+  { id:"lesson-b",       page:"lesson-b",       short:"B · Minor injuries",     title:"B — Everyday minor injuries",                  desc:"Chấn thương nhẹ: twist, bump/bang, bruise, trip, graze." },
+  { id:"lesson-c",       page:"lesson-c",       short:"C · Other problems",     title:"C — Other everyday minor problems",            desc:"mislay, spill, stain, blocked, dent, locked out, flat battery." },
+  { id:"lang-help",      page:"lang-help",      short:"Language help",          title:"Language help",                                desc:"Từ vừa là danh từ vừa là động từ: flood, crack, chip, bump…" },
+  { id:"vocab-practice", page:"vocab-practice", short:"Vocabulary Practice",    title:"Vocabulary Practice",                          desc:"Bài luyện thêm: matching, MCQ, điền từ, sửa lỗi, ngữ cảnh." },
+  { id:"ex12-1",         page:"ex12-1",         short:"Exercise 12.1",          title:"Exercise 12.1 — What do you think happened?",  desc:"9 tình huống — viết câu giải thích điều gì đã xảy ra." },
+  { id:"ex12-2",         page:"ex12-2",         short:"Exercise 12.2",          title:"Exercise 12.2 — Odd one out",                  desc:"5 nhóm từ — chọn từ khác loại và giải thích." },
+  { id:"ex12-3",         page:"ex12-3",         short:"Exercise 12.3",          title:"Exercise 12.3 — Matrix",                       desc:"Ma trận 7 đối tượng × 7 vấn đề + viết 5 câu." },
+  { id:"ex12-4",         page:"ex12-4",         short:"Exercise 12.4",          title:"Exercise 12.4 — Complete the sentences",       desc:"7 câu điền từ (câu 1 đã có đáp án trong sách)." },
+  { id:"ex12-5",         page:"ex12-5",         short:"Exercise 12.5",          title:"Exercise 12.5 — Over to you",                  desc:"6 tình huống viết tự do kèm gợi ý và câu trả lời mẫu." }
+];
+
+const PAGE_ORDER = ["overview","lesson-a","lesson-b","lesson-c","lang-help","vocab-practice","ex12-1","ex12-2","ex12-3","ex12-4","ex12-5","dashboard","review"];
+
+const PAGE_TITLES = {
+  "overview":"Lesson Overview",
+  "lesson-a":"Section A — Things that go wrong in houses and flats",
+  "lesson-b":"Section B — Everyday minor injuries",
+  "lesson-c":"Section C — Other everyday minor problems",
+  "lang-help":"Language help",
+  "vocab-practice":"Vocabulary Practice",
+  "ex12-1":"Exercise 12.1",
+  "ex12-2":"Exercise 12.2",
+  "ex12-3":"Exercise 12.3",
+  "ex12-4":"Exercise 12.4",
+  "ex12-5":"Exercise 12.5",
+  "dashboard":"Dashboard",
+  "review":"Review Mistakes"
+};
+
+const DEFAULT_STATE = {
+  completed:{},
+  answers:{},        // id -> {status:"correct"|"wrong", user:"..."}
+  mistakes:{},       // id -> {q, correct, page}
+  matrix:{},         // "row|col" -> true
+  matching:{},       // pairKey -> true
+  currentPage:"overview",
+  started:false
+};
+
+let state = loadState();
+
+function loadState(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if(!raw) return JSON.parse(JSON.stringify(DEFAULT_STATE));
+    const parsed = JSON.parse(raw);
+    return Object.assign(JSON.parse(JSON.stringify(DEFAULT_STATE)), parsed);
+  }catch(e){
+    return JSON.parse(JSON.stringify(DEFAULT_STATE));
+  }
+}
+function saveState(){
+  try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }catch(e){ /* ignore */ }
+}
+
+/* =========================================================
+   2. TIỆN ÍCH
+   ========================================================= */
+function normalize(s){
+  return String(s || "")
+    .toLowerCase()
+    .replace(/[’‘`]/g,"'")
+    .replace(/[^a-z0-9'\s]/g," ")
+    .replace(/\s+/g," ")
+    .trim();
+}
+function has(user, phrase){
+  return normalize(user).indexOf(normalize(phrase)) !== -1;
+}
+function hasAny(user, arr){
+  return arr.some(p => has(user, p));
+}
+function esc(s){
+  return String(s == null ? "" : s)
+    .replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;");
+}
+function $(sel, root){ return (root||document).querySelector(sel); }
+function $all(sel, root){ return Array.prototype.slice.call((root||document).querySelectorAll(sel)); }
+
+/* =========================================================
+   3. ĐIỀU HƯỚNG
+   ========================================================= */
+const sidebar = $("#sidebar");
+const backdrop = $("#backdrop");
+const mainEl = $("#main");
+
+function openSidebar(){ sidebar.classList.add("open"); backdrop.classList.add("show"); }
+function closeSidebar(){ sidebar.classList.remove("open"); backdrop.classList.remove("show"); }
+
+$("#menuBtn").addEventListener("click", function(){
+  if(sidebar.classList.contains("open")) closeSidebar(); else openSidebar();
+});
+backdrop.addEventListener("click", closeSidebar);
+
+$all(".nav-link").forEach(function(btn){
+  btn.addEventListener("click", function(){ showPage(btn.dataset.page); });
+});
+
+function showPage(pageId, doScroll){
+  if(!PAGE_TITLES[pageId]) pageId = "overview";
+  $all(".page").forEach(function(p){ p.classList.toggle("active", p.id === "page-" + pageId); });
+  $all(".nav-link").forEach(function(b){ b.classList.toggle("active", b.dataset.page === pageId); });
+  state.currentPage = pageId;
+  state.started = true;
+  saveState();
+  if(doScroll !== false){
+    window.scrollTo({ top:0, behavior:"smooth" });
+    if(mainEl) mainEl.scrollTop = 0;
+  }
+  closeSidebar();
+  if(pageId === "dashboard") renderDashboard();
+  if(pageId === "review") renderReview();
+}
+
+/* Gắn thanh điều hướng cuối trang cho mỗi page */
+function buildPageNavs(){
+  PAGE_ORDER.forEach(function(pid, idx){
+    const page = document.getElementById("page-" + pid);
+    if(!page) return;
+    const nav = document.createElement("div");
+    nav.className = "page-nav";
+    const prev = idx > 0 ? PAGE_ORDER[idx-1] : null;
+    const next = idx < PAGE_ORDER.length-1 ? PAGE_ORDER[idx+1] : null;
+
+    const left = document.createElement("div");
+    if(prev){
+      const b = document.createElement("button");
+      b.className = "btn ghost";
+      b.innerHTML = "‹ " + esc(PAGE_TITLES[prev]);
+      b.addEventListener("click", function(){ showPage(prev); });
+      left.appendChild(b);
+    } else {
+      left.innerHTML = '<span style="font-size:12.5px;color:var(--muted);">Unit 12 · Everyday minor problems</span>';
+    }
+
+    const right = document.createElement("div");
+    right.className = "pn-right";
+
+    const sec = SECTIONS.filter(function(s){ return s.page === pid; })[0];
+    if(sec){
+      const mark = document.createElement("button");
+      mark.className = "btn green";
+      mark.textContent = state.completed[sec.id] ? "✓ Đã hoàn thành" : "✓ Mark as complete";
+      mark.dataset.markFor = sec.id;
+      mark.addEventListener("click", function(){
+        if(state.completed[sec.id]){
+          delete state.completed[sec.id];
+        } else {
+          state.completed[sec.id] = true;
+        }
+        saveState();
+        refreshAll();
+      });
+      right.appendChild(mark);
+    }
+
+    if(next){
+      const b = document.createElement("button");
+      b.className = "btn";
+      b.innerHTML = esc(PAGE_TITLES[next]) + " ›";
+      b.addEventListener("click", function(){ showPage(next); });
+      right.appendChild(b);
+    }
+
+    nav.appendChild(left);
+    nav.appendChild(right);
+    page.appendChild(nav);
+  });
+}
+
+/* =========================================================
+   4. TIẾN ĐỘ
+   ========================================================= */
+function completedCount(){
+  return SECTIONS.filter(function(s){ return !!state.completed[s.id]; }).length;
+}
+function refreshAll(){
+  const done = completedCount();
+  const total = SECTIONS.length;
+  const pct = Math.round(done / total * 100);
+
+  $("#topProgressFill").style.width = pct + "%";
+  $("#topProgressText").textContent = pct + "%";
+  const heroFill = $("#heroProgressFill");
+  if(heroFill) heroFill.style.width = pct + "%";
+  const heroLbl = $("#heroProgressLabel");
+  if(heroLbl) heroLbl.textContent = "Tiến độ: " + done + " / " + total + " phần đã hoàn thành (" + pct + "%)";
+
+  // sidebar list
+  const wrap = $("#sideProgressList");
+  if(wrap){
+    wrap.innerHTML = SECTIONS.map(function(s){
+      const d = !!state.completed[s.id];
+      return '<div class="sp-item' + (d ? " done" : "") + '"><span class="sp-dot">' + (d ? "✓" : "") + '</span><span>' + esc(s.short) + '</span></div>';
+    }).join("");
+  }
+
+  // overview cards
+  const grid = $("#overviewGrid");
+  if(grid){
+    grid.innerHTML = SECTIONS.map(function(s){
+      const d = !!state.completed[s.id];
+      return '<div class="sec-card' + (d ? " done" : "") + '" data-goto="' + s.page + '">' +
+        '<div class="sc-status">' + (d ? "✓" : "") + '</div>' +
+        '<div class="sc-title">' + esc(s.title) + '</div>' +
+        '<div class="sc-desc">' + esc(s.desc) + '</div>' +
+        '</div>';
+    }).join("");
+    $all(".sec-card", grid).forEach(function(c){
+      c.addEventListener("click", function(){ showPage(c.dataset.goto); });
+    });
+  }
+
+  // mark buttons
+  $all("[data-mark-for]").forEach(function(b){
+    const id = b.dataset.markFor;
+    if(state.completed[id]){
+      b.textContent = "✓ Đã hoàn thành";
+      b.classList.remove("ghost");
+      b.classList.add("green");
+    } else {
+      b.textContent = "✓ Mark as complete";
+    }
+  });
+
+  // continue button
+  const cont = $("#continueBtn");
+  if(cont){
+    if(state.started || done > 0){
+      cont.style.display = "inline-flex";
+    } else {
+      cont.style.display = "none";
+    }
+  }
+}
+
+function autoComplete(sectionId, condition){
+  if(condition){
+    if(!state.completed[sectionId]){
+      state.completed[sectionId] = true;
+      saveState();
+      refreshAll();
+    }
+  }
+}
+
+/* =========================================================
+   5. LANGUAGE HELP TABLE
+   ========================================================= */
+const LANG_HELP = [
+  { w:"flood", ipa:"/flʌd/", n:"a flood — trận lũ, sự ngập nước", v:"to flood — làm ngập, tràn ngập",
+    vi:"lũ lụt / làm ngập", exN:"The flood damaged hundreds of houses.", exV:"The kitchen flooded when the pipe burst." },
+  { w:"crack", ipa:"/kræk/", n:"a crack — vết nứt, vết rạn", v:"to crack — làm nứt, làm rạn",
+    vi:"vết nứt / làm nứt", exN:"There's a crack in the ceiling.", exV:"I cracked the screen of my phone." },
+  { w:"chip", ipa:"/tʃɪp/", n:"a chip — vết mẻ ở cạnh", v:"to chip — làm mẻ, sứt một miếng nhỏ",
+    vi:"vết mẻ / làm mẻ", exN:"There's a chip on the rim of this cup.", exV:"She chipped her front tooth." },
+  { w:"bump", ipa:"/bʌmp/", n:"a bump — cú va; vết sưng nhỏ", v:"to bump — va vào, đụng vào",
+    vi:"cú va / va vào", exN:"I got a bump on my forehead.", exV:"I bumped my head on the cupboard door." },
+  { w:"bang", ipa:"/bæŋ/", n:"a bang — tiếng nổ/tiếng đập mạnh", v:"to bang — đập mạnh, va mạnh",
+    vi:"tiếng đập mạnh / đập mạnh", exN:"The door shut with a loud bang.", exV:"He banged his head on the shelf." },
+  { w:"bruise", ipa:"/bruːz/", n:"a bruise — vết bầm tím", v:"to bruise — làm bầm tím",
+    vi:"vết bầm / làm bầm", exN:"She has a bruise on her arm.", exV:"I bruised my knee when I fell." },
+  { w:"graze", ipa:"/ɡreɪz/", n:"a graze — vết xước nhẹ trên da", v:"to graze — làm xước da (đỏ, không chảy máu)",
+    vi:"vết xước / làm xước", exN:"He has a graze on his elbow.", exV:"Kelly grazed her knee this morning." },
+  { w:"dent", ipa:"/dent/", n:"a dent — vết móp, vết lõm", v:"to dent — làm móp kim loại",
+    vi:"vết móp / làm móp", exN:"There's a dent in the car door.", exV:"I'm afraid I've dented your car." },
+  { w:"stain", ipa:"/steɪn/", n:"a stain — vết bẩn lâu dài", v:"to stain — làm bẩn, để lại vết",
+    vi:"vết bẩn / làm bẩn", exN:"The coffee left a stain on the carpet.", exV:"The wine stained the tablecloth." },
+  { w:"lock", ipa:"/lɒk/", n:"a lock — ổ khóa (cũng: a lock of hair = một mớ tóc)", v:"to lock — khóa lại",
+    vi:"ổ khóa / khóa", exN:"The lock on the front door is broken.", exV:"I locked myself out of the flat." }
+];
+
+function renderLangHelp(){
+  const body = $("#langHelpBody");
+  if(!body) return;
+  body.innerHTML = LANG_HELP.map(function(r){
+    return "<tr>" +
+      "<td><b>" + esc(r.w) + "</b></td>" +
+      "<td class='ipa'>" + esc(r.ipa) + "</td>" +
+      "<td>" + esc(r.n) + "</td>" +
+      "<td>" + esc(r.v) + "</td>" +
+      "<td>" + esc(r.vi) + "</td>" +
+      "<td><em>" + esc(r.exN) + "</em></td>" +
+      "<td><em>" + esc(r.exV) + "</em></td>" +
+      "</tr>";
+  }).join("");
+}
+
+/* =========================================================
+   6. EXERCISE 12.1
+   ========================================================= */
+const EX121 = [
+  {
+    id:"121-1",
+    q:"We had to send for a plumber.",
+    given:"Maybe a pipe was leaking.",
+    model:"Maybe a pipe was leaking.",
+    hint:"Nghĩ về nước và đường ống. Plumber = thợ sửa ống nước.",
+    explain:"“send for a plumber” = gọi thợ sửa ống nước đến. Thợ ống nước được gọi khi có vấn đề về nước → ống bị rò rỉ (a pipe was leaking). Đây là đáp án mẫu được in sẵn trong sách.",
+    check:function(u){ return has(u,"leak"); }
+  },
+  {
+    id:"121-2",
+    q:"I had to call out a local mechanic.",
+    model:"The car had broken down.",
+    hint:"Call out a mechanic = gọi thợ máy đến tận nơi. Thợ máy sửa cái gì?",
+    explain:"“call out a local mechanic” = gọi thợ máy gần đó đến. Thợ máy xử lý xe cộ, nên nguyên nhân là xe bị hỏng: <em>the car had broken down</em>.",
+    check:function(u){ return hasAny(u,["broken down","broke down","break down","breakdown"]) || (has(u,"car") && hasAny(u,["broke","broken","didn't start","won't start","wouldn't start"])); }
+  },
+  {
+    id:"121-3",
+    q:"Our neighbours let us use their washing machine.",
+    model:"Our washing machine had broken down.",
+    hint:"Tại sao lại phải mượn máy giặt của hàng xóm?",
+    explain:"Phải mượn máy giặt của hàng xóm nghĩa là máy giặt nhà mình đã hỏng: <em>our washing machine had broken down</em>.",
+    check:function(u){ return has(u,"washing machine") && hasAny(u,["broke","broken","not working","didn't work","stopped working","out of order"]); }
+  },
+  {
+    id:"121-4",
+    q:"Don't worry, the handle often does that – I'll fix it back on.",
+    model:"The door handle had come off.",
+    hint:"“does that” thay cho hành động gì? “fix it back on” = gắn lại.",
+    explain:"“I'll fix it back on” = tôi sẽ gắn nó trở lại → tay nắm cửa đã bị bong ra: <em>the door handle had come off</em> (hoặc <em>had fallen off</em>).",
+    check:function(u){ return has(u,"handle") && hasAny(u,["come off","came off","fallen off","fell off","come loose"]); }
+  },
+  {
+    id:"121-5",
+    q:"Luckily, that was all it was; the skin was broken a bit, but there was no blood.",
+    model:"She had grazed her knee.",
+    hint:"Da bị rách một chút nhưng không chảy máu — đây là từ nào trong bài?",
+    explain:"Theo chú thích của sách: nếu bạn <em>graze</em> something, nó trở nên đỏ với da bị rách nhưng không chảy máu. Vậy sự việc là cô ấy bị xước đầu gối: <em>she had grazed her knee</em>.",
+    check:function(u){ return hasAny(u,["graze","grazed","scraped","scrape"]); }
+  },
+  {
+    id:"121-6",
+    q:"What type of batteries does it take? I'll get some for you.",
+    model:"The batteries in the torch had run out / were dead.",
+    hint:"Pin thì có thể ở trạng thái nào?",
+    explain:"Câu hỏi về loại pin và lời đề nghị mua pin cho thấy pin đã hết: <em>the batteries had run out</em> / <em>were dead</em> / <em>were flat</em>.",
+    check:function(u){ return has(u,"batter") && hasAny(u,["run out","ran out","dead","flat","gone","used up"]); }
+  },
+  {
+    id:"121-7",
+    q:"I don't know where you've put them. Try the bedside table.",
+    model:"You have mislaid your keys / your glasses.",
+    hint:"Để đâu đó rồi không tìm thấy — động từ trong bài là gì?",
+    explain:"“I don't know where you've put them” = tôi không biết bạn để chúng ở đâu → bạn đã để lạc chúng: <em>you have mislaid your keys / glasses</em>.",
+    check:function(u){ return hasAny(u,["mislaid","mislay","misplaced","lost","put somewhere"]); }
+  },
+  {
+    id:"121-8",
+    q:"I left it in the oven too long. It's all black on the top now!",
+    model:"The meal was ruined.",
+    hint:"Để quá lâu trong lò nướng thì món ăn thế nào?",
+    explain:"Để trong lò quá lâu và mặt trên cháy đen → món ăn bị hỏng hoàn toàn: <em>the meal was ruined</em> (hoặc <em>it was burnt</em>).",
+    check:function(u){ return hasAny(u,["ruined","ruin","burnt","burned","spoiled","spoilt"]); }
+  },
+  {
+    id:"121-9",
+    q:"I lost all my work – I know I should have saved it more often!",
+    model:"The computer crashed.",
+    hint:"Mất hết bài làm vì không lưu thường xuyên — máy tính bị gì?",
+    explain:"Mất toàn bộ bài làm chưa lưu là dấu hiệu điển hình của việc máy tính bị sập: <em>the computer crashed</em>.",
+    check:function(u){ return hasAny(u,["crash","crashed"]); }
+  }
+];
+
+function renderEx121(){
+  const wrap = $("#ex121List");
+  if(!wrap) return;
+  wrap.innerHTML = EX121.map(function(item, i){
+    const saved = state.answers[item.id];
+    const givenBlock = item.given
+      ? '<div class="note" style="margin:10px 0 0;"><b>Answer Key (in sách):</b> ' + esc(item.given) + ' <span class="badge">given in the book</span></div>'
+      : "";
+    return '' +
+    '<div class="card" data-ex-item="' + item.id + '">' +
+      '<div class="item-en" style="display:flex;gap:10px;align-items:flex-start;">' +
+        '<span style="background:var(--blue);color:#fff;border-radius:50%;min-width:26px;height:26px;display:flex;align-items:center;justify-content:center;font-size:13px;">' + (i+1) + '</span>' +
+        '<span>' + esc(item.q) + '</span>' +
+      '</div>' +
+      givenBlock +
+      '<textarea data-input="' + item.id + '" placeholder="Viết câu trả lời của bạn bằng tiếng Anh…">' + (saved ? esc(saved.user) : "") + '</textarea>' +
+      '<div class="btn-row">' +
+        '<button class="btn ghost small" data-act="hint" data-id="' + item.id + '">💡 Show Hint</button>' +
+        '<button class="btn small" data-act="check" data-id="' + item.id + '">✓ Check Answer</button>' +
+        '<button class="btn ghost small" data-act="model" data-id="' + item.id + '">👁 Show Model Answer</button>' +
+        '<button class="btn ghost small" data-act="explain" data-id="' + item.id + '">📘 Show Explanation</button>' +
+      '</div>' +
+      '<div class="fb" id="fb-' + item.id + '"></div>' +
+    '</div>';
+  }).join("");
+
+  $all("[data-act]", wrap).forEach(function(btn){
+    btn.addEventListener("click", function(){
+      const id = btn.dataset.id;
+      const item = EX121.filter(function(x){ return x.id === id; })[0];
+      const fb = document.getElementById("fb-" + id);
+      const ta = document.querySelector('[data-input="' + id + '"]');
+      const act = btn.dataset.act;
+
+      if(act === "hint"){
+        fb.className = "fb hint show";
+        fb.innerHTML = "<b>💡 Hint:</b> " + esc(item.hint);
+      }
+      else if(act === "model"){
+        fb.className = "fb model show";
+        fb.innerHTML = "<b>👁 Model Answer:</b> " + esc(item.model);
+      }
+      else if(act === "explain"){
+        fb.className = "fb info show";
+        fb.innerHTML = "<b>📘 Explanation:</b> " + item.explain;
+      }
+      else if(act === "check"){
+        const val = (ta.value || "").trim();
+        if(!val){
+          fb.className = "fb no show";
+          fb.textContent = "Bạn chưa nhập câu trả lời.";
+          return;
+        }
+        const ok = item.check(val);
+        if(ok){
+          ta.classList.remove("wrong"); ta.classList.add("correct");
+          fb.className = "fb ok show";
+          fb.innerHTML = "<b>✓ Chính xác!</b> Câu trả lời của bạn khớp với ý chính. " +
+            "<br><b>Model Answer:</b> " + esc(item.model);
+          state.answers[item.id] = { status:"correct", user:val };
+          delete state.mistakes[item.id];
+        } else {
+          ta.classList.remove("correct"); ta.classList.add("wrong");
+          fb.className = "fb no show";
+          fb.innerHTML = "<b>✗ Chưa khớp với đáp án gợi ý.</b> Câu trả lời của bạn vẫn có thể hợp lý — hãy bấm " +
+            "<em>Show Model Answer</em> để so sánh. <br><b>Gợi ý:</b> " + esc(item.hint);
+          state.answers[item.id] = { status:"wrong", user:val };
+          state.mistakes[item.id] = { q:item.q, correct:item.model, page:"ex12-1" };
+        }
+        saveState();
+        refreshAll();
+        autoComplete("ex12-1", EX121.every(function(x){ return state.answers[x.id] && state.answers[x.id].status === "correct"; }));
+      }
+    });
+  });
+}
+
+/* =========================================================
+   7. EXERCISE 12.2
+   ========================================================= */
+const EX122 = [
+  {
+    id:"122-1",
+    words:["spill","flood","chip"],
+    answer:"chip",
+    mean:{
+      spill:"làm đổ, làm tràn chất lỏng",
+      flood:"làm ngập, tràn ngập (nước)",
+      chip:"làm mẻ, sứt một miếng nhỏ ở cạnh"
+    },
+    why:"<b>chip</b> là từ khác loại. <em>spill</em> và <em>flood</em> đều liên quan đến <b>chất lỏng</b> (làm đổ / ngập nước), còn <em>chip</em> nói về việc làm <b>mẻ, sứt một vật rắn</b>. (Đáp án này được in sẵn trong sách.)"
+  },
+  {
+    id:"122-2",
+    words:["stain","graze","bruise"],
+    answer:"stain",
+    mean:{
+      stain:"vết bẩn lâu dài, khó tẩy",
+      graze:"vết xước nhẹ trên da (đỏ, không chảy máu)",
+      bruise:"vết bầm tím trên da"
+    },
+    why:"<b>stain</b> là từ khác loại. <em>graze</em> và <em>bruise</em> đều là <b>thương tích trên cơ thể người</b> (xước da, bầm tím), còn <em>stain</em> là <b>vết bẩn trên đồ vật/vải</b>."
+  },
+  {
+    id:"122-3",
+    words:["run out","bump","flat"],
+    answer:"bump",
+    mean:{
+      "run out":"cạn, hết (pin, nhiên liệu)",
+      bump:"va vào, đụng vào; cú va",
+      flat:"(pin/ắc quy) hết điện"
+    },
+    why:"<b>bump</b> là từ khác loại. <em>run out</em> và <em>flat</em> đều nói về <b>pin/ắc quy hết điện</b>, còn <em>bump</em> là <b>va chạm</b> — một chấn thương nhẹ, không liên quan đến pin."
+  },
+  {
+    id:"122-4",
+    words:["leak","smash","chip"],
+    answer:"leak",
+    mean:{
+      leak:"rò rỉ (chất lỏng/chất khí thoát ra ngoài)",
+      smash:"đập vỡ tan thành nhiều mảnh",
+      chip:"làm mẻ, sứt một miếng nhỏ ở cạnh"
+    },
+    why:"<b>leak</b> là từ khác loại. <em>smash</em> và <em>chip</em> đều là <b>hành động làm hỏng một vật rắn</b> (vỡ tan / mẻ cạnh), còn <em>leak</em> mô tả <b>chất lỏng hoặc chất khí thoát ra</b> qua một lỗ/thân nứt — không nhất thiết vật đó bị phá hủy."
+  },
+  {
+    id:"122-5",
+    words:["leak","dent","flood"],
+    answer:"dent",
+    mean:{
+      leak:"rò rỉ (nước/chất lỏng thoát ra)",
+      dent:"làm móp, làm lõm kim loại",
+      flood:"làm ngập, tràn ngập"
+    },
+    why:"<b>dent</b> là từ khác loại. <em>leak</em> và <em>flood</em> đều liên quan đến <b>nước</b> (rò rỉ / ngập nước), còn <em>dent</em> là <b>làm móp kim loại</b> do va đập — không liên quan đến nước."
+  }
+];
+
+function renderEx122(){
+  const wrap = $("#ex122List");
+  if(!wrap) return;
+  wrap.innerHTML = EX122.map(function(item, i){
+    return '' +
+    '<div class="card" data-ex122="' + item.id + '">' +
+      '<div class="item-en" style="margin-bottom:10px;">' + (i+1) + '. ' +
+        item.words.map(function(w){
+          return '<button class="mcq-opt" style="display:inline-block;width:auto;margin:0 8px 8px 0;" data-word="' + esc(w) + '">' + esc(w) + '</button>';
+        }).join("") +
+      '</div>' +
+      '<div class="fb" id="fb-' + item.id + '"></div>' +
+    '</div>';
+  }).join("");
+
+  $all("[data-ex122]", wrap).forEach(function(card){
+    const id = card.dataset.ex122;
+    const item = EX122.filter(function(x){ return x.id === id; })[0];
+    const fb = document.getElementById("fb-" + id);
+    const btns = $all("[data-word]", card);
+
+    btns.forEach(function(b){
+      b.addEventListener("click", function(){
+        const chosen = b.dataset.word;
+        btns.forEach(function(x){ x.classList.remove("ok","bad","sel"); });
+        const ok = chosen === item.answer;
+        if(ok){
+          b.classList.add("ok");
+          fb.className = "fb ok show";
+          fb.innerHTML = "<b>✓ Chính xác!</b> Từ khác loại là <b>" + esc(item.answer) + "</b>.<br>" + item.why;
+          state.answers[id] = { status:"correct", user:chosen };
+          delete state.mistakes[id];
+        } else {
+          b.classList.add("bad");
+          btns.forEach(function(x){ if(x.dataset.word === item.answer) x.classList.add("ok"); });
+          fb.className = "fb no show";
+          fb.innerHTML = "<b>✗ Chưa đúng.</b> Bạn chọn <em>" + esc(chosen) + "</em>, nhưng từ khác loại là <b>" +
+            esc(item.answer) + "</b>.<br>" + item.why;
+          state.answers[id] = { status:"wrong", user:chosen };
+          state.mistakes[id] = { q:"Odd one out: " + item.words.join(" / "), correct:item.answer, page:"ex12-2" };
+        }
+        // luôn hiện nghĩa của cả ba từ
+        const meanHtml = "<div style='margin-top:8px;font-size:13.2px;'>" +
+          item.words.map(function(w){ return "<div><b>" + esc(w) + "</b>: " + esc(item.mean[w]) + "</div>"; }).join("") +
+          "</div>";
+        fb.innerHTML += meanHtml;
+        saveState();
+        refreshAll();
+        autoComplete("ex12-2", EX122.every(function(x){ return state.answers[x.id] && state.answers[x.id].status === "correct"; }));
+      });
+    });
+  });
+}
+
+/* =========================================================
+   8. EXERCISE 12.3 — MATRIX
+   ========================================================= */
+const M_COLS = ["car","vase","elbow","clock","printer","sink","a meal"];
+const M_ROWS = ["banged","ruined","cracked","broken down","dented","stopped","blocked"];
+const M_GIVEN = "clock|stopped";       // dấu ✓ in sẵn trong sách (vị trí suy luận)
+const M_PRIMARY = [
+  "car|dented","car|broken down",
+  "vase|cracked",
+  "elbow|banged",
+  "clock|stopped",
+  "printer|broken down","printer|stopped",
+  "sink|blocked",
+  "a meal|ruined"
+];
+const M_ALT = ["car|cracked","sink|cracked"];
+
+const M_EXPLAIN = {
+  "car|dented":"ô tô bị móp do va chạm — rất điển hình",
+  "car|broken down":"xe ô tô bị hỏng, không chạy được",
+  "car|cracked":"kính chắn gió ô tô có thể bị nứt (chấp nhận được)",
+  "vase|cracked":"bình hoa bằng sứ/thủy tinh bị nứt",
+  "elbow|banged":"bạn đập/va cùi chỏ vào vật gì đó",
+  "clock|stopped":"đồng hồ đứng, không chạy nữa",
+  "printer|broken down":"máy in bị hỏng, ngừng hoạt động",
+  "printer|stopped":"máy in ngừng hoạt động (đột ngột)",
+  "sink|blocked":"bồn rửa bị tắc, nước không thoát",
+  "sink|cracked":"bồn rửa có thể bị nứt (chấp nhận được)",
+  "a meal|ruined":"món ăn bị hỏng, bị cháy"
+};
+
+function renderMatrix(){
+  const table = $("#matrixTable");
+  if(!table) return;
+
+  let html = "<thead><tr><th></th>";
+  M_COLS.forEach(function(c){ html += "<th>" + esc(c) + "</th>"; });
+  html += "</tr></thead><tbody>";
+
+  M_ROWS.forEach(function(r){
+    html += "<tr><th class='rowhead'>" + esc(r) + "</th>";
+    M_COLS.forEach(function(c){
+      const key = r + "|" + c;
+      const on = !!state.matrix[key];
+      html += "<td data-cell='" + esc(key) + "' class='" + (on ? "on" : "") + "'>✓</td>";
+    });
+    html += "</tr>";
+  });
+  html += "</tbody>";
+  table.innerHTML = html;
+
+  $all("[data-cell]", table).forEach(function(td){
+    td.addEventListener("click", function(){
+      const key = td.dataset.cell;
+      if(state.matrix[key]) delete state.matrix[key];
+      else state.matrix[key] = true;
+      td.classList.toggle("on");
+      td.classList.remove("ok","bad","miss");
+      saveState();
+    });
+  });
+
+  // Đánh dấu ô ✓ in sẵn trong sách
+  const givenCell = table.querySelector('[data-cell="' + M_GIVEN + '"]');
+  if(givenCell){
+    givenCell.classList.add("on");
+    givenCell.title = "Dấu ✓ in sẵn trong sách (vị trí suy luận từ bản nguồn dạng văn bản)";
+  }
+}
+
+function checkMatrix(){
+  const table = $("#matrixTable");
+  const fb = $("#matrixFb");
+  if(!table || !fb) return;
+
+  let correct = 0, wrong = 0, missed = 0;
+  const wrongList = [], missedList = [];
+
+  M_ROWS.forEach(function(r){
+    M_COLS.forEach(function(c){
+      const key = r + "|" + c;
+      const td = table.querySelector('[data-cell="' + key + '"]');
+      if(!td) return;
+      td.classList.remove("ok","bad","miss");
+      const userOn = !!state.matrix[key];
+      const isPrimary = M_PRIMARY.indexOf(key) !== -1;
+      const isAlt = M_ALT.indexOf(key) !== -1;
+
+      if(userOn && (isPrimary || isAlt)){
+        td.classList.add("ok"); correct++;
+      } else if(userOn && !isPrimary && !isAlt){
+        td.classList.add("bad"); wrong++;
+        wrongList.push(key.replace("|"," + "));
+      } else if(!userOn && isPrimary){
+        td.classList.add("miss"); missed++;
+        missedList.push(key.replace("|"," + "));
+      }
+    });
+  });
+
+  let html = "";
+  if(wrong === 0 && missed === 0){
+    html = "<b>✓ Xuất sắc!</b> Bạn đã đánh dấu đúng toàn bộ các kết hợp tự nhiên.";
+  } else {
+    html = "<b>Kết quả:</b> " + correct + " ô đúng · " + wrong + " ô chưa tự nhiên · " + missed + " ô còn thiếu.";
+    if(wrongList.length) html += "<br><b>Ô chưa tự nhiên:</b> " + esc(wrongList.join(", ")) + ".";
+    if(missedList.length) html += "<br><b>Ô còn thiếu (nên đánh dấu):</b> " + esc(missedList.join(", ")) + ".";
+  }
+
+  html += "<div style='margin-top:10px;'><b>Answer Key &amp; giải thích:</b>";
+  M_PRIMARY.forEach(function(k){
+    html += "<div style='margin-top:4px;'><b>" + esc(k.replace("|"," + ")) + "</b> — " + esc(M_EXPLAIN[k] || "") + "</div>";
+  });
+  html += "<div style='margin-top:8px;font-size:13px;'><b>Cũng có thể chấp nhận (kèm giải thích ngữ nghĩa):</b>";
+  M_ALT.forEach(function(k){
+    html += "<div style='margin-top:4px;'><b>" + esc(k.replace("|"," + ")) + "</b> — " + esc(M_EXPLAIN[k] || "") + "</div>";
+  });
+  html += "</div>";
+  html += "<div style='margin-top:8px;font-size:13px;'><b>Các kết hợp KHÔNG tự nhiên trong tiếng Anh:</b> " +
+    "<em>banged + vase / clock / printer / sink / a meal</em>; <em>ruined + car / vase / elbow / clock / printer / sink</em>; " +
+    "<em>cracked + elbow / clock / printer / a meal</em>; <em>broken down + vase / elbow / clock / sink / a meal</em>; " +
+    "<em>dented + vase / elbow / clock / printer / sink / a meal</em>; <em>stopped + car / vase / elbow / sink / a meal</em>; " +
+    "<em>blocked + car / vase / elbow / clock / a meal</em>. " +
+    "Lý do: mỗi từ chỉ đi với một nhóm đối tượng nhất định — <em>banged</em> cần bộ phận cơ thể hoặc vật bị va; " +
+    "<em>dented</em> cần bề mặt kim loại; <em>ruined</em> cần thứ có thể hỏng hoàn toàn như món ăn; " +
+    "<em>blocked</em> cần thứ dẫn nước/đường ống; <em>broken down</em> và <em>stopped</em> cần máy móc, thiết bị.</div>";
+  html += "</div>";
+
+  fb.className = "fb info show";
+  fb.innerHTML = html;
+
+  const allCorrect = (wrong === 0 && missed === 0);
+  if(allCorrect){
+    state.answers["matrix"] = { status:"correct", user:"ok" };
+    delete state.mistakes["matrix"];
+  } else {
+    state.answers["matrix"] = { status:"wrong", user:"partial" };
+    state.mistakes["matrix"] = {
+      q:"Exercise 12.3 — Matrix: đánh dấu các kết hợp từ đúng",
+      correct:"car+dented, car+broken down, vase+cracked, elbow+banged, clock+stopped, printer+broken down, printer+stopped, sink+blocked, a meal+ruined",
+      page:"ex12-3"
+    };
+  }
+  saveState();
+  refreshAll();
+}
+
+/* Phần viết 5 câu của 12.3 */
+const M_WRITE_MODELS = [
+  "This clock has stopped – perhaps it needs new batteries.",
+  "My car has broken down, so I had to call out a mechanic.",
+  "I'm afraid I've dented your car while parking.",
+  "The kitchen sink is blocked – the water won't run away.",
+  "I left the meal in the oven too long and it was ruined."
+];
+const M_WRITE_HINTS = [
+  "Dùng: clock + stopped. Nhớ dùng thì hiện tại hoàn thành.",
+  "Dùng: car + broken down. Có thể dùng quá khứ đơn hoặc hiện tại hoàn thành.",
+  "Dùng: car + dented. Mẫu câu xin lỗi: I'm afraid I've…",
+  "Dùng: sink + blocked. Mô tả kết quả: the water won't run away.",
+  "Dùng: a meal + ruined. Nêu nguyên nhân: I left it in the oven too long."
+];
+
+function renderMatrixWriting(){
+  const wrap = $("#matrixWriting");
+  if(!wrap) return;
+  let html = "";
+  for(let i=0;i<5;i++){
+    const id = "123-w" + (i+1);
+    const saved = state.answers[id];
+    html += '<div style="margin-bottom:14px;" data-mw="' + id + '">' +
+      '<div class="meta"><b>Câu ' + (i+1) + '</b></div>' +
+      '<textarea data-input="' + id + '" placeholder="Viết câu ' + (i+1) + '…">' + (saved ? esc(saved.user) : "") + '</textarea>' +
+      '<div class="btn-row">' +
+        '<button class="btn ghost small" data-mwact="hint" data-id="' + id + '">💡 Hint</button>' +
+        '<button class="btn ghost small" data-mwact="model" data-id="' + id + '">👁 Model Sentence</button>' +
+      '</div>' +
+      '<div class="fb" id="fb-' + id + '"></div>' +
+      '</div>';
+  }
+  wrap.innerHTML = html;
+
+  $all("[data-mwact]", wrap).forEach(function(b){
+    b.addEventListener("click", function(){
+      const id = b.dataset.id;
+      const idx = parseInt(id.replace("123-w",""),10) - 1;
+      const fb = document.getElementById("fb-" + id);
+      const ta = document.querySelector('[data-input="' + id + '"]');
+      if(b.dataset.mwact === "hint"){
+        fb.className = "fb hint show";
+        fb.innerHTML = "<b>💡 Hint:</b> " + esc(M_WRITE_HINTS[idx]);
+      } else {
+        fb.className = "fb model show";
+        fb.innerHTML = "<b>👁 Model Sentence:</b> " + esc(M_WRITE_MODELS[idx]);
+      }
+      if(ta && ta.value.trim()) state.answers[id] = { status:"written", user:ta.value.trim() };
+      saveState();
+      checkMatrixWritingDone();
+    });
+  });
+
+  $all('[data-input]', wrap).forEach(function(ta){
+    ta.addEventListener("input", function(){
+      state.answers[ta.dataset.input] = { status:"written", user:ta.value.trim() };
+      saveState();
+      checkMatrixWritingDone();
+    });
+  });
+}
+function checkMatrixWritingDone(){
+  const all = [1,2,3,4,5].every(function(i){
+    const a = state.answers["123-w"+i];
+    return a && a.user && a.user.length > 8;
+  });
+  if(all) autoComplete("ex12-3", !!(state.answers["matrix"] && state.answers["matrix"].status === "correct"));
+}
+
+/* =========================================================
+   9. EXERCISE 12.4
+   ========================================================= */
+const EX124 = [
+  {
+    id:"124-1",
+    before:"We had to use candles because there was a power",
+    after:".",
+    given:"cut",
+    locked:true,
+    hint:"Cụm danh từ chỉ việc mất điện.",
+    vocab:"<b>power cut</b> = sự mất điện (BrE). Câu này đã có đáp án in sẵn trong sách.",
+    check:function(u){ return has(u,"cut"); }
+  },
+  {
+    id:"124-2",
+    before:"I didn't look where I was going as I walked through the low doorway and",
+    after:".",
+    model:"banged my head",
+    hint:"Va đầu vào khung cửa thấp — dùng bump hoặc bang ở thì quá khứ.",
+    vocab:"<b>bang / bump your head</b> = đập/va đầu vào vật gì. Ở đây dùng thì quá khứ đơn: <em>banged / bumped my head</em>.",
+    check:function(u){ return has(u,"head") && hasAny(u,["bang","banged","bump","bumped","hit"]); }
+  },
+  {
+    id:"124-3",
+    before:"The wind blew the door shut and I realised I'd",
+    after:".",
+    model:"locked myself out",
+    hint:"Bị nhốt ở ngoài vì cửa tự đóng.",
+    vocab:"<b>lock yourself out</b> = tự khóa cửa và bị nhốt ở ngoài. Dùng đại từ phản thân đúng với chủ ngữ: <em>I'd locked myself out</em>.",
+    check:function(u){ return has(u,"lock") && has(u,"myself") && has(u,"out"); }
+  },
+  {
+    id:"124-4",
+    before:"I would ring her but I'm afraid I've",
+    after:".",
+    model:"mislaid her number",
+    hint:"Để đâu đó rồi không tìm thấy — động từ trong Unit 12.",
+    vocab:"<b>mislay</b> (quá khứ <em>mislaid</em>) = để lạc, để quên đâu đó. Khác với <em>lose</em> (mất hẳn).",
+    check:function(u){ return hasAny(u,["mislaid","mislay","misplaced","lost"]); }
+  },
+  {
+    id:"124-5",
+    before:"I can't take a photo, my camera's",
+    after:".",
+    model:"stopped working / broken / not working",
+    hint:"Máy ảnh không hoạt động nữa.",
+    vocab:"<b>stop working</b> = ngừng hoạt động. Cũng có thể dùng <em>broken</em>, <em>not working</em>, hoặc nếu là pin thì <em>the battery's flat</em>.",
+    check:function(u){ return hasAny(u,["stopped working","not working","broken","doesn't work","flat","dead","crashed"]); }
+  },
+  {
+    id:"124-6",
+    before:"I tried to run over the rocks but I",
+    after:".",
+    model:"tripped and fell",
+    hint:"Vấp phải đá và ngã.",
+    vocab:"<b>trip</b> = vấp (gần ngã); <b>fall down</b> = ngã. Câu đầy đủ: <em>I tripped and fell</em> / <em>I tripped over</em>.",
+    check:function(u){ return hasAny(u,["trip","tripped","fell","fall","stumbled"]); }
+  },
+  {
+    id:"124-7",
+    before:"I accidentally sat on my bag of crisps and they",
+    after:".",
+    model:"got crushed",
+    hint:"Ngồi lên túi khoai tây chiên thì chúng bị gì?",
+    vocab:"<b>crush</b> = đè bẹp, làm nát. Dạng bị động: <em>they got crushed</em> / <em>they were crushed</em>.",
+    check:function(u){ return hasAny(u,["crush","crushed","squashed","squashed"]); }
+  }
+];
+
+const WORD_BANK = ["power cut","banged my head","locked myself out","mislaid","flat battery","tripped and fell","got crushed","stopped working"];
+
+function renderEx124(){
+  const wrap = $("#ex124List");
+  if(!wrap) return;
+
+  const bank = $("#wordBank");
+  if(bank){
+    bank.innerHTML = WORD_BANK.map(function(w){
+      return '<span class="wb-chip" data-wb="' + esc(w) + '">' + esc(w) + '</span>';
+    }).join("");
+    $all("[data-wb]", bank).forEach(function(chip){
+      chip.addEventListener("click", function(){
+        const active = document.activeElement;
+        if(active && (active.tagName === "INPUT" || active.tagName === "TEXTAREA") && !active.disabled){
+          active.value = (active.value ? active.value.replace(/\s*$/,"") + " " : "") + chip.dataset.wb;
+          active.dispatchEvent(new Event("input"));
+        }
+      });
+    });
+  }
+
+  wrap.innerHTML = EX124.map(function(item, i){
+    const saved = state.answers[item.id];
+    if(item.locked){
+      return '<div class="card">' +
+        '<div class="item-en">' + (i+1) + ". " + esc(item.before) + ' <b style="color:var(--green);">' + esc(item.given) + '</b>' + esc(item.after) + '</div>' +
+        '<div class="note" style="margin-bottom:0;"><b>Answer Key (in sách):</b> cut — “power cut” = sự mất điện. Câu này đã có sẵn đáp án trong sách.</div>' +
+        '</div>';
+    }
+    return '<div class="card" data-124="' + item.id + '">' +
+      '<div class="item-en" style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">' +
+        '<span style="background:var(--blue);color:#fff;border-radius:50%;min-width:26px;height:26px;display:flex;align-items:center;justify-content:center;font-size:13px;">' + (i+1) + '</span>' +
+        '<span>' + esc(item.before) + ' <input type="text" data-input="' + item.id + '" style="display:inline-block;width:190px;" value="' + (saved ? esc(saved.user) : "") + '" />' + esc(item.after) + '</span>' +
+      '</div>' +
+      '<div class="btn-row">' +
+        '<button class="btn ghost small" data-a124="hint" data-id="' + item.id + '">💡 Hint</button>' +
+        '<button class="btn small" data-a124="check" data-id="' + item.id + '">✓ Check</button>' +
+        '<button class="btn ghost small" data-a124="answer" data-id="' + item.id + '">👁 Show Answer</button>' +
+        '<button class="btn ghost small" data-a124="vocab" data-id="' + item.id + '">📘 Vocabulary Note</button>' +
+      '</div>' +
+      '<div class="fb" id="fb-' + item.id + '"></div>' +
+    '</div>';
+  }).join("");
+
+  $all("[data-a124]", wrap).forEach(function(b){
+    b.addEventListener("click", function(){
+      const id = b.dataset.id;
+      const item = EX124.filter(function(x){ return x.id === id; })[0];
+      const fb = document.getElementById("fb-" + id);
+      const inp = document.querySelector('[data-input="' + id + '"]');
+      const act = b.dataset.a124;
+
+      if(act === "hint"){ fb.className = "fb hint show"; fb.innerHTML = "<b>💡 Hint:</b> " + esc(item.hint); }
+      else if(act === "answer"){ fb.className = "fb model show"; fb.innerHTML = "<b>👁 Answer Key:</b> " + esc(item.model); }
+      else if(act === "vocab"){ fb.className = "fb info show"; fb.innerHTML = "<b>📘 Vocabulary Note:</b> " + item.vocab; }
+      else if(act === "check"){
+        const v = (inp.value || "").trim();
+        if(!v){ fb.className = "fb no show"; fb.textContent = "Bạn chưa điền gì."; return; }
+        if(item.check(v)){
+          inp.classList.remove("wrong"); inp.classList.add("correct");
+          fb.className = "fb ok show";
+          fb.innerHTML = "<b>✓ Đúng!</b> " + item.vocab;
+          state.answers[id] = { status:"correct", user:v };
+          delete state.mistakes[id];
+        } else {
+          inp.classList.remove("correct"); inp.classList.add("wrong");
+          fb.className = "fb no show";
+          fb.innerHTML = "<b>✗ Chưa khớp.</b> Hãy thử lại hoặc xem <em>Show Answer</em>.<br><b>Gợi ý:</b> " + esc(item.hint);
+          state.answers[id] = { status:"wrong", user:v };
+          state.mistakes[id] = { q:item.before + " ___" + item.after, correct:item.model, page:"ex12-4" };
+        }
+        saveState(); refreshAll();
+        autoComplete("ex12-4", EX124.every(function(x){
+          if(x.locked) return true;
+          return state.answers[x.id] && state.answers[x.id].status === "correct";
+        }));
+      }
+    });
+  });
+
+  $all("[data-input]", wrap).forEach(function(inp){
+    inp.addEventListener("input", function(){
+      const id = inp.dataset.input;
+      const cur = state.answers[id] || {};
+      state.answers[id] = { status:cur.status || "typed", user:inp.value.trim() };
+      saveState();
+    });
+  });
+}
+
+/* =========================================================
+   10. EXERCISE 12.5
+   ========================================================= */
+const EX125 = [
+  {
+    id:"125-1",
+    q:"you mislaid your credit card?",
+    hintVocab:"mislaid, credit card, block / cancel, bank, report",
+    hintGrammar:"I would + V (bare infinitive). Ví dụ: I would call… / I'd ring…",
+    model:"If I mislaid my credit card, I would ring the bank immediately and ask them to block it. Then I'd search my flat, especially the pockets of my coat and my wallet.",
+    vi:"Nếu tôi để lạc thẻ tín dụng, tôi sẽ gọi ngay cho ngân hàng và yêu cầu khóa thẻ. Sau đó tôi sẽ tìm khắp căn hộ, đặc biệt là trong túi áo khoác và ví.",
+    note:"Cấu trúc điều kiện loại 2: <em>If + past simple, would + V</em>. <b>mislaid</b> là quá khứ của <em>mislay</em>. Lưu ý: <em>block a card</em> = khóa thẻ.",
+    keys:["bank","cancel","block","report","ring","call","search","look"]
+  },
+  {
+    id:"125-2",
+    q:"you noticed your guest's glass was chipped?",
+    hintVocab:"chipped, glass, another one, replace, sharp, edge",
+    hintGrammar:"I would + V. Dùng: offer, get, replace.",
+    model:"If I noticed my guest's glass was chipped, I would apologise and get them another one straight away. A chipped glass can cut your lip.",
+    vi:"Nếu tôi nhận ra cốc của khách bị mẻ, tôi sẽ xin lỗi và lấy ngay cho họ một cái khác. Cốc mẻ có thể làm đứt môi.",
+    note:"<b>chipped</b> = mẻ một miếng nhỏ ở cạnh. <em>get someone another one</em> = lấy cho ai một cái khác.",
+    keys:["another","apolog","replace","get","offer","new"]
+  },
+  {
+    id:"125-3",
+    q:"one of your coat buttons came off?",
+    hintVocab:"button, come off, sew (sewed/sewn), needle and thread, fix",
+    hintGrammar:"I would + V. Có thể dùng: I'd sew it back on.",
+    model:"If one of my coat buttons came off, I would sew it back on with a needle and thread. If I couldn't find the button, I'd look for a spare one in my sewing kit.",
+    vi:"Nếu một chiếc cúc áo khoác của tôi bị bong ra, tôi sẽ khâu lại bằng kim và chỉ. Nếu không tìm thấy cúc, tôi sẽ tìm một chiếc dự phòng trong hộp kim chỉ.",
+    note:"<b>come off</b> = bong ra, tuột ra. <em>sew something back on</em> = khâu lại cái gì.",
+    keys:["sew","needle","thread","fix","button","back on"]
+  },
+  {
+    id:"125-4",
+    q:"your mobile phone stopped working?",
+    hintVocab:"stopped working, restart, charge, flat battery, repair shop, warranty",
+    hintGrammar:"I would + V. Có thể dùng: I'd try… / I'd take it to…",
+    model:"If my mobile phone stopped working, I would first try restarting it and charging it, because the battery might be flat. If that didn't work, I'd take it to a repair shop.",
+    vi:"Nếu điện thoại của tôi ngừng hoạt động, trước tiên tôi sẽ thử khởi động lại và sạc pin, vì có thể pin đã hết. Nếu không được, tôi sẽ mang đến tiệm sửa chữa.",
+    note:"<b>stop working</b> = ngừng hoạt động. <em>flat battery</em> (BrE) = pin hết điện. <em>take something to a repair shop</em> = mang cái gì đến tiệm sửa.",
+    keys:["restart","charge","battery","repair","shop","fix","try"]
+  },
+  {
+    id:"125-5",
+    q:"you bruised your forehead?",
+    hintVocab:"bruise, forehead, ice, cold compress, painkiller, doctor",
+    hintGrammar:"I would + V. Dùng: I'd put… / I'd see…",
+    model:"If I bruised my forehead, I would put some ice on it to stop the swelling. If it hurt a lot or I felt dizzy, I would go and see a doctor.",
+    vi:"Nếu tôi bị bầm tím trán, tôi sẽ chườm đá để giảm sưng. Nếu đau nhiều hoặc thấy chóng mặt, tôi sẽ đi khám bác sĩ.",
+    note:"<b>bruise</b> = vết bầm tím (danh từ) / làm bầm (động từ). <em>put ice on it</em> = chườm đá. <em>feel dizzy</em> = thấy chóng mặt.",
+    keys:["ice","cold","compress","doctor","hospital","painkiller","rest"]
+  },
+  {
+    id:"125-6",
+    q:"your watch was slow?",
+    hintVocab:"watch, slow, set, adjust, repair, new battery",
+    hintGrammar:"I would + V. Dùng: I'd set it… / I'd take it…",
+    model:"If my watch was slow, I would set it to the correct time. If it kept losing time, I'd take it to a shop and ask them to change the battery or repair it.",
+    vi:"Nếu đồng hồ đeo tay của tôi chạy chậm, tôi sẽ chỉnh lại cho đúng giờ. Nếu nó cứ chậm mãi, tôi sẽ mang đến cửa hàng để thay pin hoặc sửa.",
+    note:"<b>slow</b> = chạy chậm (chỉ ít giờ hơn thực tế); <b>fast</b> = chạy nhanh; <b>stopped</b> = đứng. <em>set a watch</em> = chỉnh đồng hồ. <em>lose time</em> = bị chậm dần.",
+    keys:["set","adjust","repair","battery","shop","correct","change"]
+  }
+];
+
+function renderEx125(){
+  const wrap = $("#ex125List");
+  if(!wrap) return;
+  wrap.innerHTML = EX125.map(function(item, i){
+    const saved = state.answers[item.id];
+    return '<div class="card" data-125="' + item.id + '">' +
+      '<div class="item-en" style="display:flex;gap:10px;align-items:flex-start;">' +
+        '<span style="background:var(--blue);color:#fff;border-radius:50%;min-width:26px;height:26px;display:flex;align-items:center;justify-content:center;font-size:13px;">' + (i+1) + '</span>' +
+        '<span>What would you do if ' + esc(item.q) + '</span>' +
+      '</div>' +
+      '<textarea data-input="' + item.id + '" placeholder="Viết câu trả lời của bạn (nên dùng cấu trúc I would… hoặc If I …, I would …)">' + (saved ? esc(saved.user) : "") + '</textarea>' +
+      '<div class="btn-row">' +
+        '<button class="btn ghost small" data-a125="hint" data-id="' + item.id + '">💡 Gợi ý</button>' +
+        '<button class="btn small" data-a125="check" data-id="' + item.id + '">✓ Kiểm tra</button>' +
+        '<button class="btn ghost small" data-a125="model" data-id="' + item.id + '">👁 Câu trả lời mẫu</button>' +
+        '<button class="btn ghost small" data-a125="again" data-id="' + item.id + '">↺ Try Again</button>' +
+      '</div>' +
+      '<div class="fb" id="fb-' + item.id + '"></div>' +
+    '</div>';
+  }).join("");
+
+  $all("[data-a125]", wrap).forEach(function(b){
+    b.addEventListener("click", function(){
+      const id = b.dataset.id;
+      const item = EX125.filter(function(x){ return x.id === id; })[0];
+      const fb = document.getElementById("fb-" + id);
+      const ta = document.querySelector('[data-input="' + id + '"]');
+      const act = b.dataset.a125;
+
+      if(act === "hint"){
+        fb.className = "fb hint show";
+        fb.innerHTML = "<b>💡 Từ vựng gợi ý:</b> " + esc(item.hintVocab) + "<br><b>📘 Cấu trúc gợi ý:</b> " + esc(item.hintGrammar);
+      }
+      else if(act === "model"){
+        fb.className = "fb model show";
+        fb.innerHTML = "<b>👁 Model Answer:</b> " + esc(item.model) +
+          "<br><b>🇻🇳 Bản dịch:</b> " + esc(item.vi) +
+          "<br><b>📘 Ghi chú:</b> " + item.note;
+      }
+      else if(act === "again"){
+        ta.value = "";
+        ta.classList.remove("correct","wrong");
+        fb.className = "fb";
+        fb.innerHTML = "";
+        delete state.answers[id];
+        saveState();
+        refreshAll();
+        return;
+      }
+      else if(act === "check"){
+        const v = (ta.value || "").trim();
+        if(!v){ fb.className = "fb no show"; fb.textContent = "Bạn chưa viết gì."; return; }
+
+        const words = v.split(/\s+/).filter(Boolean);
+        const wordCount = words.length;
+        const low = normalize(v);
+        const usedKey = item.keys.some(function(k){ return low.indexOf(normalize(k)) !== -1; });
+        const hasWould = low.indexOf("would") !== -1 || low.indexOf("will") !== -1 || low.indexOf("d ") !== -1;
+        const hasConditional = low.indexOf("if ") !== -1 || low.indexOf("i would") !== -1 || low.indexOf("i'd") !== -1;
+
+        let score = 0;
+        const notes = [];
+        if(wordCount >= 8){ score++; notes.push("✔ Độ dài câu ổn (" + wordCount + " từ)."); }
+        else notes.push("✗ Câu hơi ngắn (" + wordCount + " từ). Nên viết ít nhất 8 từ.");
+        if(usedKey){ score++; notes.push("✔ Có dùng từ vựng trọng tâm của tình huống."); }
+        else notes.push("✗ Chưa thấy từ vựng trọng tâm (" + item.hintVocab.split(",")[0].trim() + "…).");
+        if(hasWould || hasConditional){ score++; notes.push("✔ Có dùng cấu trúc điều kiện / would."); }
+        else notes.push("✗ Chưa thấy cấu trúc <em>would</em> hoặc <em>if</em>.");
+        if(/\b(i|we|you)\b/.test(low)){ score++; notes.push("✔ Có chủ ngữ rõ ràng."); }
+        else notes.push("✗ Chưa thấy chủ ngữ rõ ràng.");
+
+        let level = "Cần cố gắng thêm";
+        let cls = "no";
+        if(score >= 4){ level = "Rất tốt"; cls = "ok"; }
+        else if(score >= 3){ level = "Khá tốt"; cls = "info"; }
+
+        ta.classList.remove("correct","wrong");
+        ta.classList.add(score >= 3 ? "correct" : "wrong");
+
+        fb.className = "fb " + cls + " show";
+        fb.innerHTML = "<b>Đánh giá tự động cơ bản: " + level + " (" + score + "/4).</b>" +
+          "<div style='margin-top:6px;font-size:13.2px;'>" + notes.join("<br>") + "</div>" +
+          "<div style='margin-top:8px;font-size:13px;color:var(--muted);'>" +
+          "⚠ Đây là đánh giá tự động đơn giản (độ dài, từ khóa, cấu trúc), <b>không phải chấm ngôn ngữ hoàn hảo</b>. " +
+          "Hãy bấm <em>Câu trả lời mẫu</em> để tự so sánh và cải thiện.</div>";
+
+        state.answers[id] = { status: score >= 3 ? "correct" : "wrong", user:v };
+        if(score >= 3) delete state.mistakes[id];
+        else state.mistakes[id] = { q:"12.5 — What would you do if " + item.q, correct:item.model, page:"ex12-5" };
+
+        saveState();
+        refreshAll();
+        autoComplete("ex12-5", EX125.every(function(x){
+          const a = state.answers[x.id];
+          return a && a.status === "correct";
+        }));
+      }
+    });
+  });
+
+  $all("[data-input]", wrap).forEach(function(ta){
+    ta.addEventListener("input", function(){
+      const id = ta.dataset.input;
+      const cur = state.answers[id] || {};
+      state.answers[id] = { status:cur.status || "typed", user:ta.value.trim() };
+      saveState();
+    });
+  });
+}
+
+/* =========================================================
+   11. VOCABULARY PRACTICE
+   ========================================================= */
+const MATCH_PAIRS = [
+  { k:"leak",  d:"(of a liquid or gas) to escape from a hole or crack; also a hole where this happens" },
+  { k:"smash", d:"to break something violently and noisily into many pieces" },
+  { k:"crack", d:"to damage something so that a line appears on its surface, but it does not break into pieces" },
+  { k:"chip",  d:"to damage something by breaking a small piece off its edge" },
+  { k:"bruise",d:"a dark area on your skin where you have hurt yourself" },
+  { k:"graze", d:"to break the skin slightly so that it becomes red, but there is no blood" },
+  { k:"dent",  d:"to bend the metal of something a little bit by hitting something" },
+  { k:"stain", d:"a permanent mark that is difficult to remove" }
+];
+
+function shuffle(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    const t = a[i]; a[i]=a[j]; a[j]=t;
+  }
+  return a;
+}
+
+let matchSel = null;
+
+function renderMatching(){
+  const left = $("#matchLeft");
+  const right = $("#matchRight");
+  const fb = $("#matchFb");
+  if(!left || !right) return;
+
+  const leftItems = shuffle(MATCH_PAIRS.map(function(p){ return p.k; }));
+  const rightItems = shuffle(MATCH_PAIRS.map(function(p){ return p; }));
+
+  left.innerHTML = leftItems.map(function(k){
+    const done = !!state.matching[k];
+    return '<div class="match-item' + (done ? " matched" : "") + '" data-mk="' + esc(k) + '"><span class="mkey">' + esc(k) + '</span></div>';
+  }).join("");
+
+  right.innerHTML = rightItems.map(function(p){
+    const done = !!state.matching[p.k];
+    return '<div class="match-item' + (done ? " matched" : "") + '" data-md="' + esc(p.k) + '">' + esc(p.d) + '</div>';
+  }).join("");
+
+  function bindLeft(){
+    $all("[data-mk]", left).forEach(function(el){
+      el.addEventListener("click", function(){
+        if(el.classList.contains("matched")) return;
+        $all("[data-mk]", left).forEach(function(x){ x.classList.remove("sel"); });
+        el.classList.add("sel");
+        matchSel = el.dataset.mk;
+      });
+    });
+  }
+  function bindRight(){
+    $all("[data-md]", right).forEach(function(el){
+      el.addEventListener("click", function(){
+        if(el.classList.contains("matched")) return;
+        if(!matchSel){
+          fb.className = "fb hint show";
+          fb.innerHTML = "Hãy chọn một từ ở cột bên trái trước.";
+          return;
+        }
+        const target = el.dataset.md;
+        if(target === matchSel){
+          state.matching[target] = true;
+          saveState();
+          el.classList.add("matched");
+          const l = left.querySelector('[data-mk="' + matchSel + '"]');
+          if(l){ l.classList.add("matched"); l.classList.remove("sel"); }
+          fb.className = "fb ok show";
+          fb.innerHTML = "<b>✓ Chính xác!</b> <b>" + esc(target) + "</b> — " + esc(el.textContent);
+          matchSel = null;
+          if(MATCH_PAIRS.every(function(p){ return state.matching[p.k]; })){
+            fb.innerHTML += "<br><b>🎉 Bạn đã hoàn thành toàn bộ phần Matching!</b>";
+          }
+        } else {
+          el.classList.add("err");
+          setTimeout(function(){ el.classList.remove("err"); }, 700);
+          fb.className = "fb no show";
+          fb.innerHTML = "<b>✗ Chưa đúng.</b> Hãy đọc lại định nghĩa và thử lại.";
+        }
+      });
+    });
+  }
+  bindLeft(); bindRight();
+
+  if(MATCH_PAIRS.every(function(p){ return state.matching[p.k]; })){
+    fb.className = "fb ok show";
+    fb.innerHTML = "<b>🎉 Bạn đã hoàn thành toàn bộ phần Matching!</b>";
+  }
+}
+
+$("#matchReset") && $("#matchReset").addEventListener("click", function(){
+  state.matching = {};
+  saveState();
+  matchSel = null;
+  renderMatching();
+  $("#matchFb").className = "fb";
+  $("#matchFb").innerHTML = "";
+});
+
+/* ---- MCQ sets ---- */
+const MCQ1 = [
+  { id:"v-m1", q:"The car won't start. I think the battery is ______.", opts:["flat","chipped"], ans:0, ex:"<b>flat battery</b> = ắc quy hết điện (BrE). <em>chipped</em> chỉ dùng cho vật bị mẻ cạnh." },
+  { id:"v-m2", q:"I ______ my head against the cupboard door.", opts:["bumped","spilled"], ans:0, ex:"<b>bump your head</b> = va đầu vào vật gì. <em>spill</em> dùng cho chất lỏng." },
+  { id:"v-m3", q:"The sink is ______ — the water won't run away.", opts:["blocked","dented"], ans:0, ex:"<b>blocked</b> = tắc, nước không thoát. <em>dented</em> = móp kim loại." },
+  { id:"v-m4", q:"I've ______ my memory stick again — I can't find it anywhere.", opts:["mislaid","crashed"], ans:0, ex:"<b>mislay</b> = để lạc, để đâu đó rồi không tìm thấy. <em>crash</em> dùng cho máy tính hoặc xe đâm." },
+  { id:"v-m5", q:"The cup is ______ — there's a small piece missing from the edge.", opts:["chipped","cracked"], ans:0, ex:"<b>chipped</b> = mẻ mất một miếng nhỏ ở cạnh. <b>cracked</b> = có đường nứt nhưng vẫn nguyên khối." },
+  { id:"v-m6", q:"The washing machine ______ down last week.", opts:["broke","came"], ans:0, ex:"<b>break down</b> = (máy móc) hỏng. <em>come off</em> = bong ra, không dùng với máy giặt." }
+];
+
+const MCQ2 = [
+  { id:"v-c1", q:"Bạn không vào được căn hộ vì cửa tự đóng lại và chìa khóa ở trong. → “I've ______ myself out.”", opts:["locked","blocked","stopped"], ans:0, ex:"<b>lock yourself out</b> = tự khóa cửa và bị nhốt ở ngoài." },
+  { id:"v-c2", q:"Nước đang chảy qua trần nhà. → “The pipe must be ______.”", opts:["leaking","denting","chipping"], ans:0, ex:"<b>leak</b> = rò rỉ chất lỏng. <em>dent</em> và <em>chip</em> là hư hỏng vật lý, không liên quan đến nước chảy." },
+  { id:"v-c3", q:"Bạn làm rơi điện thoại; màn hình có một đường ngang nhưng kính vẫn nguyên một tấm. → “The screen is ______.”", opts:["cracked","smashed","crushed"], ans:0, ex:"<b>cracked</b> = có đường nứt nhưng chưa vỡ thành mảnh. <em>smashed</em> = vỡ tan; <em>crushed</em> = bẹp nát." },
+  { id:"v-c4", q:"Áo bạn có một vết sẫm màu sau bữa trưa và giặt không sạch. → “It has left a ______.”", opts:["stain","graze","chip"], ans:0, ex:"<b>stain</b> = vết bẩn lâu dài, khó tẩy." },
+  { id:"v-c5", q:"Đồng hồ nhà bếp chỉ 7 giờ 15 nhưng thực ra là 7 giờ 30. → “The clock is ______.”", opts:["slow","stopped","blocked"], ans:0, ex:"<b>slow</b> = chạy chậm (chỉ ít giờ hơn thực tế). <em>stopped</em> = đứng hẳn." }
+];
+
+function renderMCQ(containerId, data){
+  const wrap = document.getElementById(containerId);
+  if(!wrap) return;
+  wrap.innerHTML = data.map(function(item, i){
+    const saved = state.answers[item.id];
+    return '<div style="margin-bottom:18px;" data-mcq="' + item.id + '">' +
+      '<div class="item-en" style="margin-bottom:8px;">' + (i+1) + '. ' + esc(item.q) + '</div>' +
+      item.opts.map(function(o, oi){
+        let cls = "mcq-opt";
+        if(saved && saved.status === "correct" && oi === item.ans) cls += " ok";
+        if(saved && saved.status === "wrong" && saved.user === String(oi)) cls += " bad";
+        return '<button class="' + cls + '" data-opt="' + oi + '">' + esc(o) + '</button>';
+      }).join("") +
+      '<div class="fb" id="fb-' + item.id + '"></div>' +
+      '</div>';
+  }).join("");
+
+  $all("[data-mcq]", wrap).forEach(function(block){
+    const id = block.dataset.mcq;
+    const item = data.filter(function(x){ return x.id === id; })[0];
+    const fb = document.getElementById("fb-" + id);
+    const btns = $all("[data-opt]", block);
+
+    btns.forEach(function(b){
+      b.addEventListener("click", function(){
+        if(state.answers[id] && state.answers[id].status === "correct") return;
+        const oi = parseInt(b.dataset.opt, 10);
+        btns.forEach(function(x){ x.classList.remove("ok","bad","sel"); });
+        if(oi === item.ans){
+          b.classList.add("ok");
+          fb.className = "fb ok show";
+          fb.innerHTML = "<b>✓ Chính xác!</b> " + item.ex;
+          state.answers[id] = { status:"correct", user:String(oi) };
+          delete state.mistakes[id];
+        } else {
+          b.classList.add("bad");
+          btns[item.ans].classList.add("ok");
+          fb.className = "fb no show";
+          fb.innerHTML = "<b>✗ Chưa đúng.</b> Đáp án đúng là <b>" + esc(item.opts[item.ans]) + "</b>.<br>" + item.ex;
+          state.answers[id] = { status:"wrong", user:String(oi) };
+          state.mistakes[id] = { q:item.q, correct:item.opts[item.ans], page:"vocab-practice" };
+        }
+        saveState(); refreshAll();
+      });
+    });
+  });
+}
+
+/* ---- Fill in the blanks ---- */
+const FILL_BLANKS = [
+  { id:"v-f1", before:"There's been a power", after:", so the lights aren't working.", model:"cut", hint:"Cụm danh từ chỉ mất điện.", check:function(u){ return has(u,"cut"); } },
+  { id:"v-f2", before:"I've", after:"myself out — I can't get back into the flat.", model:"locked", hint:"Động từ chỉ khóa cửa.", check:function(u){ return has(u,"lock"); } },
+  { id:"v-f3", before:"She", after:"her ankle coming down the stairs.", model:"twisted", hint:"Chấn thương mắt cá chân.", check:function(u){ return hasAny(u,["twist","twisted","sprained"]); } },
+  { id:"v-f4", before:"The biscuits got", after:"by the potatoes in my bag.", model:"crushed", hint:"Bị đè bẹp.", check:function(u){ return hasAny(u,["crush","crushed","squashed"]); } },
+  { id:"v-f5", before:"My computer keeps", after:"today!", model:"crashing", hint:"Máy tính bị sập liên tục.", check:function(u){ return hasAny(u,["crash","crashing"]); } },
+  { id:"v-f6", before:"The door handle has", after:"off.", model:"come off / fallen off", hint:"Bong ra hoặc rơi ra.", check:function(u){ return hasAny(u,["come off","came off","fallen off","fell off"]); } }
+];
+
+function renderFillBlanks(){
+  const wrap = $("#fillBlanks");
+  if(!wrap) return;
+  wrap.innerHTML = FILL_BLANKS.map(function(item, i){
+    const saved = state.answers[item.id];
+    return '<div style="margin-bottom:16px;" data-fb-item="' + item.id + '">' +
+      '<div class="item-en" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">' +
+        '<span>' + (i+1) + '. ' + esc(item.before) + '</span>' +
+        '<input type="text" data-input="' + item.id + '" style="width:180px;" value="' + (saved ? esc(saved.user) : "") + '" />' +
+        '<span>' + esc(item.after) + '</span>' +
+      '</div>' +
+      '<div class="btn-row">' +
+        '<button class="btn ghost small" data-fact="hint" data-id="' + item.id + '">💡 Hint</button>' +
+        '<button class="btn small" data-fact="check" data-id="' + item.id + '">✓ Check</button>' +
+        '<button class="btn ghost small" data-fact="answer" data-id="' + item.id + '">👁 Answer</button>' +
+      '</div>' +
+      '<div class="fb" id="fb-' + item.id + '"></div>' +
+      '</div>';
+  }).join("");
+
+  $all("[data-fact]", wrap).forEach(function(b){
+    b.addEventListener("click", function(){
+      const id = b.dataset.id;
+      const item = FILL_BLANKS.filter(function(x){ return x.id === id; })[0];
+      const fb = document.getElementById("fb-" + id);
+      const inp = document.querySelector('[data-input="' + id + '"]');
+      const act = b.dataset.fact;
+
+      if(act === "hint"){ fb.className = "fb hint show"; fb.innerHTML = "<b>💡 Hint:</b> " + esc(item.hint); }
+      else if(act === "answer"){ fb.className = "fb model show"; fb.innerHTML = "<b>👁 Answer Key:</b> " + esc(item.model); }
+      else {
+        const v = (inp.value || "").trim();
+        if(!v){ fb.className = "fb no show"; fb.textContent = "Bạn chưa điền gì."; return; }
+        if(item.check(v)){
+          inp.classList.remove("wrong"); inp.classList.add("correct");
+          fb.className = "fb ok show";
+          fb.innerHTML = "<b>✓ Đúng!</b> Đáp án: <b>" + esc(item.model) + "</b>";
+          state.answers[id] = { status:"correct", user:v };
+          delete state.mistakes[id];
+        } else {
+          inp.classList.remove("correct"); inp.classList.add("wrong");
+          fb.className = "fb no show";
+          fb.innerHTML = "<b>✗ Chưa đúng.</b> Gợi ý: " + esc(item.hint);
+          state.answers[id] = { status:"wrong", user:v };
+          state.mistakes[id] = { q:item.before + " ___" + item.after, correct:item.model, page:"vocab-practice" };
+        }
+        saveState(); refreshAll();
+      }
+    });
+  });
+}
+
+/* ---- Error correction ---- */
+const ERR_FIX = [
+  {
+    id:"v-e1",
+    wrong:"My computer keeps breaking down today!",
+    model:"My computer keeps crashing today!",
+    hint:"Máy tính bị sập thì dùng động từ nào?",
+    explain:"Máy tính bị sập dùng <b>crash</b>, không dùng <em>break down</em> (từ này dùng cho máy móc, xe cộ hỏng). Câu đúng: <em>My computer keeps crashing today!</em> (câu gốc trong sách phần A).",
+    check:function(u){ return has(u,"crash"); }
+  },
+  {
+    id:"v-e2",
+    wrong:"She grazed her ankle coming down the stairs.",
+    model:"She twisted her ankle coming down the stairs.",
+    hint:"Bị thương ở mắt cá chân khi xuống cầu thang thì gọi là gì?",
+    explain:"<b>graze</b> = làm xước da (đỏ, rách da nhẹ). Bị thương mắt cá chân khi xuống cầu thang là <b>twist your ankle</b> = trẹo mắt cá chân. Câu đúng: <em>She twisted her ankle coming down the stairs.</em> (câu gốc phần B).",
+    check:function(u){ return hasAny(u,["twist","twisted","sprained"]); }
+  },
+  {
+    id:"v-e3",
+    wrong:"I'm afraid I've cracked your car.",
+    model:"I'm afraid I've dented your car.",
+    hint:"Làm lõm kim loại ô tô thì dùng động từ nào?",
+    explain:"<b>dent</b> = làm móp kim loại do va đập. <em>crack</em> = làm nứt (thường dùng cho kính, gốm, thủy tinh). Câu đúng: <em>I'm afraid I've dented your car.</em> (câu gốc phần C).",
+    check:function(u){ return has(u,"dent"); }
+  },
+  {
+    id:"v-e4",
+    wrong:"The batteries in this torch have broken down.",
+    model:"The batteries in this torch have run out. / The batteries are dead.",
+    hint:"Pin thì không “hỏng” theo kiểu máy móc — pin sẽ thế nào?",
+    explain:"Pin không dùng <em>break down</em> (hỏng máy móc). Pin <b>run out</b> (cạn) hoặc <b>be dead / be flat</b> (hết điện). Câu đúng: <em>The batteries in this torch have run out / are dead.</em> (câu gốc phần A).",
+    check:function(u){ return hasAny(u,["run out","ran out","dead","flat"]); }
+  },
+  {
+    id:"v-e5",
+    wrong:"Kelly fell down and bruised her knee — it was red with broken skin, but there was no blood.",
+    model:"Kelly fell down and grazed her knee — it was red with broken skin, but there was no blood.",
+    hint:"Da bị rách nhẹ, đỏ lên, không chảy máu — đó là từ nào?",
+    explain:"Theo chú thích của sách: nếu bạn <b>graze</b> something, nó trở nên đỏ với da bị rách nhưng không chảy máu. <em>bruise</em> là vết bầm (da nguyên vẹn, sẫm màu). Câu đúng: <em>Kelly fell down and grazed her knee…</em>",
+    check:function(u){ return has(u,"graze"); }
+  }
+];
+
+function renderErrFix(){
+  const wrap = $("#errFix");
+  if(!wrap) return;
+  wrap.innerHTML = ERR_FIX.map(function(item, i){
+    const saved = state.answers[item.id];
+    return '<div style="margin-bottom:18px;" data-err="' + item.id + '">' +
+      '<div class="item-en" style="margin-bottom:6px;">' + (i+1) + '. <span style="color:var(--red);text-decoration:underline wavy var(--red);">' + esc(item.wrong) + '</span></div>' +
+      '<textarea data-input="' + item.id + '" placeholder="Viết lại câu cho đúng…">' + (saved ? esc(saved.user) : "") + '</textarea>' +
+      '<div class="btn-row">' +
+        '<button class="btn ghost small" data-eact="hint" data-id="' + item.id + '">💡 Hint</button>' +
+        '<button class="btn small" data-eact="check" data-id="' + item.id + '">✓ Check</button>' +
+        '<button class="btn ghost small" data-eact="answer" data-id="' + item.id + '">👁 Correct Sentence</button>' +
+      '</div>' +
+      '<div class="fb" id="fb-' + item.id + '"></div>' +
+      '</div>';
+  }).join("");
+
+  $all("[data-eact]", wrap).forEach(function(b){
+    b.addEventListener("click", function(){
+      const id = b.dataset.id;
+      const item = ERR_FIX.filter(function(x){ return x.id === id; })[0];
+      const fb = document.getElementById("fb-" + id);
+      const ta = document.querySelector('[data-input="' + id + '"]');
+      const act = b.dataset.eact;
+
+      if(act === "hint"){ fb.className = "fb hint show"; fb.innerHTML = "<b>💡 Hint:</b> " + esc(item.hint); }
+      else if(act === "answer"){
+        fb.className = "fb model show";
+        fb.innerHTML = "<b>👁 Correct Sentence:</b> " + esc(item.model) + "<br><b>📘 Giải thích:</b> " + item.explain;
+      } else {
+        const v = (ta.value || "").trim();
+        if(!v){ fb.className = "fb no show"; fb.textContent = "Bạn chưa viết lại câu."; return; }
+        if(item.check(v)){
+          ta.classList.remove("wrong"); ta.classList.add("correct");
+          fb.className = "fb ok show";
+          fb.innerHTML = "<b>✓ Đúng!</b> " + item.explain;
+          state.answers[id] = { status:"correct", user:v };
+          delete state.mistakes[id];
+        } else {
+          ta.classList.remove("correct"); ta.classList.add("wrong");
+          fb.className = "fb no show";
+          fb.innerHTML = "<b>✗ Chưa đúng.</b> " + esc(item.hint);
+          state.answers[id] = { status:"wrong", user:v };
+          state.mistakes[id] = { q:item.wrong, correct:item.model, page:"vocab-practice" };
+        }
+        saveState(); refreshAll();
+      }
+    });
+  });
+}
+
+/* =========================================================
+   12. DASHBOARD & REVIEW
+   ========================================================= */
+function renderDashboard(){
+  const done = completedCount();
+  const total = SECTIONS.length;
+  const pct = Math.round(done/total*100);
+  $("#kpiPct").textContent = pct + "%";
+  $("#kpiDone").textContent = done;
+  $("#kpiTotal").textContent = total;
+  $("#kpiMistakes").textContent = Object.keys(state.mistakes).length;
+
+  const list = $("#dashList");
+  list.innerHTML = SECTIONS.map(function(s){
+    const d = !!state.completed[s.id];
+    return '<div style="display:flex;align-items:center;gap:12px;padding:9px 0;border-bottom:1px solid var(--border);">' +
+      '<span class="badge ' + (d ? "ok" : "") + '" style="min-width:64px;text-align:center;">' + (d ? "✓ Done" : "Chưa") + '</span>' +
+      '<span style="flex:1;font-size:14px;color:var(--navy);">' + esc(s.title) + '</span>' +
+      '<button class="btn ghost small" data-goto="' + s.page + '">Mở</button>' +
+      '</div>';
+  }).join("");
+
+  $all("[data-goto]", list).forEach(function(b){
+    b.addEventListener("click", function(){ showPage(b.dataset.goto); });
+  });
+}
+
+function renderReview(){
+  const wrap = $("#reviewList");
+  const keys = Object.keys(state.mistakes);
+  if(keys.length === 0){
+    wrap.innerHTML = '<div class="empty-msg">🎉 Tuyệt vời! Hiện tại bạn không có câu nào cần ôn lại.<br>Hãy tiếp tục làm bài tập — các câu trả lời sai sẽ tự động xuất hiện ở đây.</div>';
+    return;
+  }
+  wrap.innerHTML = keys.map(function(k){
+    const m = state.mistakes[k];
+    return '<div class="mistake-item">' +
+      '<div class="mq">' + esc(m.q) + '</div>' +
+      '<div class="ma"><b>Đáp án / câu trả lời mẫu:</b> ' + esc(m.correct) + '</div>' +
+      '<div class="mp">Thuộc phần: ' + esc(PAGE_TITLES[m.page] || m.page) +
+        ' · <a href="javascript:void(0)" data-goto="' + esc(m.page) + '" style="color:var(--blue);">Đi đến phần này</a></div>' +
+      '</div>';
+  }).join("");
+
+  $all("[data-goto]", wrap).forEach(function(a){
+    a.addEventListener("click", function(){ showPage(a.dataset.goto); });
+  });
+}
+
+$("#clearMistakesBtn") && $("#clearMistakesBtn").addEventListener("click", function(){
+  if(confirm("Xóa toàn bộ danh sách câu cần ôn lại?")){
+    state.mistakes = {};
+    saveState();
+    renderReview();
+    refreshAll();
+  }
+});
+
+/* =========================================================
+   13. KHỞI TẠO
+   ========================================================= */
+function init(){
+  buildPageNavs();
+  renderLangHelp();
+  renderEx121();
+  renderEx122();
+  renderMatrix();
+  renderMatrixWriting();
+  renderEx124();
+  renderEx125();
+  renderMatching();
+  renderMCQ("mcq1", MCQ1);
+  renderMCQ("mcq2", MCQ2);
+  renderFillBlanks();
+  renderErrFix();
+  refreshAll();
+
+  // Overview buttons
+  $("#startBtn").addEventListener("click", function(){
+    state.started = true;
+    saveState();
+    showPage("lesson-a");
+  });
+  $("#continueBtn").addEventListener("click", function(){
+    showPage(state.currentPage && state.currentPage !== "overview" ? state.currentPage : "lesson-a");
+  });
+
+  // Exercise 12.3 buttons
+  $("#checkMatrixBtn").addEventListener("click", checkMatrix);
+  $("#clearMatrixBtn").addEventListener("click", function(){
+    state.matrix = {};
+    saveState();
+    renderMatrix();
+    const fb = $("#matrixFb");
+    fb.className = "fb"; fb.innerHTML = "";
+  });
+
+  // Exercise 12.4 buttons
+  $("#toggleWordBank").addEventListener("click", function(){
+    const wb = $("#wordBank");
+    wb.style.display = wb.style.display === "none" ? "flex" : "none";
+  });
+  $("#check124").addEventListener("click", function(){
+    let okCount = 0, totalCount = 0;
+    EX124.forEach(function(item){
+      if(item.locked) return;
+      totalCount++;
+      const inp = document.querySelector('[data-input="' + item.id + '"]');
+      const fb = document.getElementById("fb-" + item.id);
+      const v = (inp.value || "").trim();
+      if(!v){ fb.className = "fb hint show"; fb.innerHTML = "Bạn chưa điền câu này."; return; }
+      if(item.check(v)){
+        inp.classList.remove("wrong"); inp.classList.add("correct");
+        fb.className = "fb ok show";
+        fb.innerHTML = "<b>✓ Đúng!</b> " + item.vocab;
+        state.answers[item.id] = { status:"correct", user:v };
+        delete state.mistakes[item.id];
+        okCount++;
+      } else {
+        inp.classList.remove("correct"); inp.classList.add("wrong");
+        fb.className = "fb no show";
+        fb.innerHTML = "<b>✗ Chưa đúng.</b> Gợi ý: " + esc(item.hint);
+        state.answers[item.id] = { status:"wrong", user:v };
+        state.mistakes[item.id] = { q:item.before + " ___" + item.after, correct:item.model, page:"ex12-4" };
+      }
+    });
+    const out = $("#fb124");
+    out.className = "fb info show";
+    out.innerHTML = "<b>Kết quả Exercise 12.4:</b> " + okCount + " / " + totalCount + " câu đúng (không tính câu 1 đã có đáp án trong sách).";
+    saveState(); refreshAll();
+    autoComplete("ex12-4", EX124.every(function(x){
+      if(x.locked) return true;
+      return state.answers[x.id] && state.answers[x.id].status === "correct";
+    }));
+  });
+  $("#showAll124").addEventListener("click", function(){
+    EX124.forEach(function(item){
+      if(item.locked) return;
+      const fb = document.getElementById("fb-" + item.id);
+      fb.className = "fb model show";
+      fb.innerHTML = "<b>👁 Answer Key:</b> " + esc(item.model) + "<br><b>📘</b> " + item.vocab;
+    });
+  });
+
+  // Dashboard buttons
+  $("#reviewBtn").addEventListener("click", function(){ showPage("review"); });
+  $("#resetBtn").addEventListener("click", function(){
+    if(confirm("Bạn có chắc muốn xóa TOÀN BỘ tiến độ học tập? Hành động này không thể hoàn tác.")){
+      state = JSON.parse(JSON.stringify(DEFAULT_STATE));
+      saveState();
+      location.reload();
+    }
+  });
+
+  // Mở đúng trang đã lưu
+  const startPage = (state.started && PAGE_TITLES[state.currentPage]) ? state.currentPage : "overview";
+  showPage(startPage, false);
+
+  // Lưu khi rời trang
+  window.addEventListener("beforeunload", saveState);
+}
+
+document.addEventListener("DOMContentLoaded", init);
+</script>
+</body>
+</html>
